@@ -1,23 +1,22 @@
-import React, { Component } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import AppRoutes from './AppRoutes';
-import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
-import { Layout } from './components/Layout';
-import './custom.css';
+import React from 'react';
+import { Container } from 'reactstrap';
 
-export default class App extends Component {
-  static displayName = App.name;
+import Header from './components/shopping/header';
+import Index from './components/shopping/index';
+import Footer from './components/footer';
 
-  render() {
+
+export default function App() {
+
     return (
-      <Layout>
-        <Routes>
-          {AppRoutes.map((route, index) => {
-            const { element, requireAuth, ...rest } = route;
-            return <Route key={index} {...rest} element={requireAuth ? <AuthorizeRoute {...rest} element={element} /> : element} />;
-          })}
-        </Routes>
-      </Layout>
-    );
-  }
+        <>
+            <Header />
+
+            <main>
+                <Index />
+            </main>
+
+            <Footer/>
+        </>
+      );
 }
