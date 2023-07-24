@@ -7,7 +7,7 @@ export default function SearchBar() {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        let url = API_URL + 'shopping';
+        const url = API_URL + '/Shopping/ProductCategories';
         fetch(url)
         .then(response => response.json())
         .then(json => setCategories(json));
