@@ -1,8 +1,8 @@
 import React from "react";
+import { Outlet } from "react-router";
 
 
 import Header from "./shopping/header";
-import Home from "./shopping/home";
 import Footer from "./footer";
 
 
@@ -13,7 +13,7 @@ function App() {
       <Header/>
 
       <main>
-        <Home/>
+        <Outlet/>
       </main>
       
       <Footer/>
