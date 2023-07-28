@@ -15,7 +15,7 @@ export default function SearchBar() {
 
     
     const categoryButtons = categories.map((item) => (
-        <button className="dropdown-item" type="button" value={item.id} >{item.title}</button>
+        <button className="dropdown-item" type="button" value={item.id} key={item.id} >{item.title}</button>
     ));
    
 
