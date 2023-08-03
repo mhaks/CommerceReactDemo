@@ -10,7 +10,8 @@ export default function SearchBar() {
         const url = API_URL + '/Shopping/ProductCategories';
         fetch(url)
         .then(response => response.json())
-        .then(json => setCategories(json));
+        .then(json => setCategories(json))
+        .catch(err => { console.error(err)});
     }, []);
 
     

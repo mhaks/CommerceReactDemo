@@ -3,7 +3,8 @@ import { createBrowserRouter } from "react-router-dom";
 
 import App from "./App";
 import ErrorPage from "./error-page";
-import Home from "./shopping/home";
+import Home, {loader as homeLoader } from "./shopping/home";
+import Product, {loader as productLoader } from "./shopping/product";
 
 export const router = createBrowserRouter([
     {
@@ -12,15 +13,16 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage/>,
         children: [
             {
-                errorElement: <ErrorPage/>,
-                children: [
-                    {
-                        index: true,
-                        element: <Home/>
-                    }
-
-                ],
+                index: true,
+                element: <Home/>,
+                loader: homeLoader,
             },
+            {   
+                path: "product/:id",
+                element: <Product/>,
+                loader: productLoader
+            }
+
         ],
     },
 ]);

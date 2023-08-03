@@ -1,19 +1,29 @@
 import React, { useEffect, useState } from "react";
 
+import { useLoaderData } from "react-router";
+import { Link } from "react-router-dom";
+
 import SearchBar from "./searchbar";
+
 
 const API_URL = process.env.REACT_APP_API_URL;
 
+export async function loader(){
+    const url = API_URL + '/shopping/topproducts';
+
+    let products = [];
+    await fetch(url)
+        .then(response => response.json())
+        .then(data => {products = data;})
+        .catch(error => console.error(error));
+
+    return products;
+}
+
 export default function Home() {
+    
+    const products = useLoaderData();
 
-    const [products, setProducts] = useState([]);
-
-    useEffect(() => {
-        const url = API_URL + '/shopping/topproducts';
-        fetch(url)
-            .then(response => response.json())
-            .then(json => setProducts(json));
-    },[]);
 
     const productsTemplate = products.map((item, index) => (
         <div className="col mb-5">
@@ -32,7 +42,7 @@ export default function Home() {
                 </div>
                 
                 <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                    <div className="text-center"><a className="btn btn-outline-dark mt-auto" href="..\Shopping\Product?id=@product.Id">View options</a></div>
+                    <div className="text-center"><Link className="btn btn-outline-dark mt-auto" to={'./product/' + item.id} >View options</Link></div>
                 </div>
             </div>
         </div>
