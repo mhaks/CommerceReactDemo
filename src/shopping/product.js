@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useLoaderData } from "react-router";
 
 const API_URL = process.env.REACT_APP_API_URL;
