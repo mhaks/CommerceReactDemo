@@ -26,7 +26,7 @@ export default function Home() {
 
 
     const productsTemplate = products.map((item, index) => (
-        <div className="col mb-5">
+        <div className="col mb-5" key={item.id}>
             <div className="card h-100">
                 <div className="badge bg-dark text-white position-absolute"  style={{top: 0.5 + "rem", right: 0.5 + "rem"}}>Top Seller</div>
                 

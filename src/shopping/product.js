@@ -48,7 +48,7 @@ export default function Product() {
                                 <div className="d-flex">
                                     <form method="post" >
                                         <input type='hidden' name='id' value={product.id}/>
-                                        <input className="form-control text-center me-3" name="quantity" type="number" value="1" style={{maxWidth: 3 + "rem"}} />
+                                        <input className="form-control text-center me-3" name="quantity" type="number" defaultValue="1" style={{maxWidth: 3 + "rem"}} />
                                         <button className="btn btn-outline-dark flex-shrink-0" type="submit">
                                             <i className="bi-cart-fill me-1"></i>
                                             Add to cart

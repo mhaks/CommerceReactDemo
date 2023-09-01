@@ -1,33 +1,46 @@
 import React from "react";
 
 import { useLoaderData } from "react-router";
-import { Link } from "react-router-dom";
+import { Link, } from "react-router-dom";
 
 import SearchBar from "./searchbar";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 
-export async function loader(params){
-    const url = API_URL + '/Shopping/Search';
-
+export async function loader({request}){
+    const reqUrl = new URL(request.url);
+    const searchUrl = `${API_URL}/Shopping/Search?${reqUrl.searchParams}`;
+    const categoriesUrl = `${API_URL}/Shopping/ProductCategories`;
+    
     let products = [];
-    await fetch(url)
+    await fetch(searchUrl)
         .then(response => response.json())
-        .then(data => {products = data;})
+        .then(json => {products = json;})
         .catch(error => console.error(error));
 
-    return products;
+    let categories = [];
+    await fetch(categoriesUrl)
+        .then(response => response.json())
+        .then(json => {categories = json;})
+        .catch(err => { console.error(err)});
+
+    const searchString = reqUrl.searchParams.get('SearchString');
+    const categoryId = reqUrl.searchParams.get('CategoryId');
+
+    console.log(categories);
+    console.log(categoryId);
+    return [products, categories, searchString, categoryId];
 }
 
 
 
 export default function Search() {
-    const products = useLoaderData();
-    let categoryId = null;
-    let searchString = null;
+    const [products, categories, searchString, categoryId] = useLoaderData();
 
-
+    const category = categories.find(item => item.id === categoryId);
+    //const searchDisplay = (category) ? `${category.title} - ${searchString}` : `${searchString}`;
+    const searchDisplay = `${searchString}`;
 
     const resultsTemplate = products.map((product, index) => (
         <tr key={product.id}>
@@ -69,8 +82,7 @@ export default function Search() {
             <section className="py-2">
                 <div className="container px-4 px-lg-5 mt-5">
                     <div className="row">
-                        <h4>Search Results:&nbsp;
-                            {(searchString == null && categoryId == null) ? (<>ALL</>) : (<></>)}
+                        <h4>Search Results:&nbsp;{searchDisplay}                           
                         </h4>
                     </div>
 

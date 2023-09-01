@@ -7,6 +7,7 @@ import Home, {loader as homeLoader } from "./shopping/home";
 import Search, {loader as searchLoader } from "./shopping/search";
 import Product, {loader as productLoader } from "./shopping/product";
 
+
 export const router = createBrowserRouter([
     {
         path: '/',
@@ -16,10 +17,10 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 element: <Home/>,
-                loader: homeLoader,
-            },
+                loader: homeLoader,    
+            },            
             {
-                path: "search",
+                path: "search/:SearchString?:CategoryName?",
                 element: <Search/>,
                 loader: searchLoader,
             },
@@ -27,8 +28,7 @@ export const router = createBrowserRouter([
                 path: "product/:id",
                 element: <Product/>,
                 loader: productLoader
-            }
-
+            },           
         ],
     },
 ]);
