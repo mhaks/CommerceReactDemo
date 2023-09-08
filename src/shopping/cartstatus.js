@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -17,12 +18,12 @@ export default function CartStatus() {
 
     return (
         <div className="d-flex ms-auto">
-            <a className="nav nav-link text-dark" href="\Shopping\Cart?customerId=1">My Orders</a>
-            <a className="btn btn-outline-dark" href="\Shopping\Cart?customerId=1">
+            <div className="nav nav-link text-dark" to="./cart">My Orders</div>
+            <Link className="btn btn-outline-dark" to="./cart">
                 <i className="bi-cart-fill me-1"></i>
                 Cart
                 <span className="badge bg-dark text-white ms-1 rounded-pill">{count}</span>
-            </a>
+            </Link>
         </div>
     );
 }

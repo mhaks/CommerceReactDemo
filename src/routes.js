@@ -6,6 +6,7 @@ import ErrorPage from "./error-page";
 import Home, {loader as homeLoader } from "./shopping/home";
 import Search, {loader as searchLoader } from "./shopping/search";
 import Product, {loader as productLoader } from "./shopping/product";
+import Cart, {loader as cartLoader } from "./shopping/cart";
 
 
 export const router = createBrowserRouter([
@@ -27,8 +28,13 @@ export const router = createBrowserRouter([
             {   
                 path: "product/:id",
                 element: <Product/>,
-                loader: productLoader
-            },           
+                loader: productLoader,
+            },
+            {
+                path: "cart",
+                element: <Cart/>,
+                loader: cartLoader,
+            }           
         ],
     },
 ]);
