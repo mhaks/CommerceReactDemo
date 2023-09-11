@@ -1,5 +1,6 @@
 import React from "react";
-import { useLoaderData } from "react-router";
+import { useLoaderData, redirect } from "react-router";
+import { Link, Form, } from "react-router-dom";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -13,6 +14,17 @@ export async function loader({params}) {
         .catch(error => console.error(error));
    
     return product;
+}
+
+
+export async function action({request, params}) {
+    const formData = await request.formData(); 
+    const addCartUrl = `${API_URL}/Shopping/AddCartProduct`;
+    await fetch(addCartUrl, {
+        method: 'POST',
+                body: formData,
+    });     
+    return redirect('../cart/');
 }
 
 export default function Product() {
@@ -46,14 +58,14 @@ export default function Product() {
                                     <span>${product.price}</span>
                                 </div>                
                                 <div className="d-flex">
-                                    <form method="post" >
-                                        <input type='hidden' name='id' value={product.id}/>
+                                    <Form method="post" >
+                                        <input type='hidden' name='productId' value={product.id}/>
                                         <input className="form-control text-center me-3" name="quantity" type="number" defaultValue="1" style={{maxWidth: 3 + "rem"}} />
                                         <button className="btn btn-outline-dark flex-shrink-0" type="submit">
                                             <i className="bi-cart-fill me-1"></i>
                                             Add to cart
                                         </button>
-                                    </form>
+                                    </Form>
                                 </div>
                             </div>
                             </>

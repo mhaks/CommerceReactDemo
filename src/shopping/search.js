@@ -1,7 +1,7 @@
 import React from "react";
 
-import { useLoaderData } from "react-router";
-import { Link, } from "react-router-dom";
+import { redirect, useLoaderData } from "react-router";
+import { Link, Form, } from "react-router-dom";
 
 import SearchBar from "./searchbar";
 
@@ -34,6 +34,17 @@ export async function loader({request}){
 }
 
 
+export async function action({request, params}) {
+    const formData = await request.formData(); 
+    const addCartUrl = `${API_URL}/Shopping/AddCartProduct`;
+    await fetch(addCartUrl, {
+        method: 'POST',
+                body: formData,
+    });     
+    return redirect('../cart/');
+}
+
+
 
 export default function Search() {
     const [products, categories, searchString, categoryId] = useLoaderData();
@@ -57,11 +68,11 @@ export default function Search() {
                 <div className="fw-bolder">${product.price}</div>
             </td>
             <td className="align-middle text-end">
-                <form >
-                    <input type="hidden" name="id" value={product.id}/>
+                <Form method="post">
+                    <input type="hidden" name="productId" value={product.id}/>
                     <input type="hidden" name="quantity" value="1" />
                     <button type="submit" className="btn btn-outline-dark mt-auto text-center text-nowrap">Add to cart</button>
-                </form>
+                </Form>
             </td>
         </tr>
     ));

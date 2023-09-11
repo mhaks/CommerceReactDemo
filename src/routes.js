@@ -4,8 +4,8 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import ErrorPage from "./error-page";
 import Home, {loader as homeLoader } from "./shopping/home";
-import Search, {loader as searchLoader } from "./shopping/search";
-import Product, {loader as productLoader } from "./shopping/product";
+import Search, {loader as searchLoader, action as searchAction } from "./shopping/search";
+import Product, {loader as productLoader, action as productAction } from "./shopping/product";
 import Cart, {loader as cartLoader } from "./shopping/cart";
 
 
@@ -24,11 +24,13 @@ export const router = createBrowserRouter([
                 path: "search/:SearchString?:CategoryName?",
                 element: <Search/>,
                 loader: searchLoader,
+                action: searchAction,
             },
             {   
                 path: "product/:id",
                 element: <Product/>,
                 loader: productLoader,
+                action: productAction,
             },
             {
                 path: "cart",
