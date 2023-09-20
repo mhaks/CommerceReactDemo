@@ -18,7 +18,7 @@ export default function CartStatus() {
 
     return (
         <div className="d-flex ms-auto">
-            <div className="nav nav-link text-dark" to="./cart">My Orders</div>
+            <Link className="nav nav-link text-dark" to="./orders">My Orders</Link>
             <Link className="btn btn-outline-dark" to="./cart">
                 <i className="bi-cart-fill me-1"></i>
                 Cart
