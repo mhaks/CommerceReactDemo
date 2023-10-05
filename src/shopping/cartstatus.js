@@ -8,7 +8,7 @@ export default function CartStatus() {
     const [count, setCount] = useState(0);
 
     useEffect(() => {
-        const url = API_URL + '/Shopping/CartCount';
+        const url = API_URL + '/Shopping/Cart/Count';
         fetch(url)
         .then(resp => resp.json())
         .then(data => { setCount(data)})

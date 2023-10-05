@@ -19,9 +19,9 @@ export async function loader({params}) {
 
 export async function action({request, params}) {
     const formData = await request.formData(); 
-    const addCartUrl = `${API_URL}/Shopping/AddCartProduct`;
+    const addCartUrl = `${API_URL}/Shopping/Cart/Add`;
     await fetch(addCartUrl, {
-        method: 'POST',
+        method: 'PUT',
                 body: formData,
     });     
     return redirect('../cart/');
