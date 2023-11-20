@@ -8,6 +8,7 @@ import Search, {loader as searchLoader, action as searchAction } from "./shoppin
 import Product, {loader as productLoader, action as productAction } from "./shopping/product";
 import Cart, {loader as cartLoader } from "./shopping/cart";
 import Orders, { loader as ordersLoader } from "./shopping/orders";
+import Checkout, {loader as checkoutLoader, action as checkoutAction } from "./shopping/checkout";
 
 
 export const router = createBrowserRouter([
@@ -37,6 +38,12 @@ export const router = createBrowserRouter([
                 path: "cart",
                 element: <Cart/>,
                 loader: cartLoader,
+            },
+            {
+                path: "checkout",
+                element: <Checkout/>,
+                loader: checkoutLoader,
+                action: checkoutAction,
             },
             { 
                 path: "orders",

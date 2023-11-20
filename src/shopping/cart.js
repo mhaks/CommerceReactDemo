@@ -30,7 +30,7 @@ export default function Cart() {
             
             <td><img className="" src="https://dummyimage.com/150x100/dee2e6/6c757d.jpg" alt={item.product.title} /></td>
             <td>
-                <Link to={'../product/' + item.product.id}>
+                <Link to={'../product/' + item.product.id} target="_blank">
                     <h5 className="fw-bolder">{item.product.title}</h5>
                 </Link>
                 
@@ -104,7 +104,7 @@ export default function Cart() {
                         <div className="container px-4 px-lg-5">
                             <div className="row">
                                 <div className="col-6"><Link className="btn  btn-outline-dark mt-auto" to="../search/">Continue shopping</Link></div>
-                                <div className="col-6 text-end"><Link className="btn btn-outline-success mt-auto" to={'./checkout/' + order.orderId}>Proceed to Checkout</Link></div>
+                                <div className="col-6 text-end"><Link className="btn btn-outline-success mt-auto" to={'../checkout/'}>Proceed to Checkout</Link></div>
                             </div>
                         </div>
                     </section>
