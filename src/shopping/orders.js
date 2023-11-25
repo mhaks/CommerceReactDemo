@@ -37,12 +37,13 @@ export default function Orders() {
 
         const ordered = order.orderHistory.find(h => h.orderStatusId === 2);
         const orderDateTime = toLocalDateTime(ordered.orderDate);
+
         const current = order.orderHistory[order.orderHistory.length - 1];
         const lastDateTime = toLocalDateTime(current.orderDate);
 
         ordersTemplate.push(
             <tr key={order.id}>
-                <td><Link to={"./order/" + order.id} >{orderId}</Link></td>
+                <td><Link to={'../order/' + order.id} >{orderId}</Link></td>
                 <td>{orderDateTime}</td>
                 <td>{current.orderStatus.name}</td>
                 <td>{lastDateTime}</td>
@@ -53,12 +54,6 @@ export default function Orders() {
     }
     
         
-                                   
-
-                               
-
-   
-
     return (
         <>
             <section className="bg-dark py-1">

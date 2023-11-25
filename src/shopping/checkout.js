@@ -1,6 +1,6 @@
 import React from "react";
-import { useLoaderData } from "react-router";
-import { Link } from "react-router-dom";
+import { useLoaderData, redirect } from "react-router";
+import { Link, Form, } from "react-router-dom";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -22,7 +22,7 @@ export async function action({request}) {
         method: 'POST',
         body: formData,
     });     
-    return;
+    return redirect('../orders/');
 }   
 
 export default function Checkout() {
@@ -33,19 +33,19 @@ export default function Checkout() {
 
     const productsTemplate = order.orderProducts?.map((item, index) => (
         <tr key={item.id}>
-            <td><img class="" src="https://dummyimage.com/90x60/dee2e6/6c757d.jpg" alt="{item.product.title}" /></td>
+            <td><img className="" src="https://dummyimage.com/90x60/dee2e6/6c757d.jpg" alt="{item.product.title}" /></td>
             <td>
             <Link to={'../product/' + item.product.id} target="_blank">
-                        <h5 class="fw-bolder">{item.product.title}</h5>
+                        <h5 className="fw-bolder">{item.product.title}</h5>
                </Link>
-                <p class="fw-bolder">{item.product.brand}</p>
+                <p className="fw-bolder">{item.product.brand}</p>
             </td>
 
-            <td class="align-middle text-end">
-                <div class="fw-bolder">{item.quantity}</div>
+            <td className="align-middle text-end">
+                <div className="fw-bolder">{item.quantity}</div>
             </td>
-            <td class="align-middle text-end">
-                <div class="fw-bolder">${item.price}</div>
+            <td className="align-middle text-end">
+                <div className="fw-bolder">${item.price.toFixed(2)}</div>
             </td>
         </tr>
     ));
@@ -60,13 +60,13 @@ export default function Checkout() {
                 </div>
             </section>
 
-            <form method="post" class="form">
-                <section class="py-2">
-                    <div class="container px-4 px-lg-5 mt-5">
-                        <div class="row">
-                            <hr class="col-12" />
-                            <h5 class="col-3">Shipping Address</h5>
-                            <div class="col-9">
+            <Form method="post" className="form">
+                <section className="py-2">
+                    <div className="container px-4 px-lg-5 mt-5">
+                        <div className="row">
+                            <hr className="col-12" />
+                            <h5 className="col-3">Shipping Address</h5>
+                            <div className="col-9">
                                 <div>{order.user.fullName}</div>
                                 <div>{order.user.address1}</div>
                                 {order.user.address2 && <div>{order.user.address2}</div>}
@@ -79,32 +79,32 @@ export default function Checkout() {
                     </div>
                 </section>
 
-                <section class="py-2">
-                    <div class="container px-4 px-lg-5 mt-5">
-                        <div class="row">
-                            <hr class="col-12" />
-                            <h5 class="col-3">Payment Method</h5>
-                            <div class="col-9">
-                                <div class="col-6 mt-2">
-                                    <label class="form-label" for="cardName">Name on card</label>
-                                    <input id="cardName" name="cardName" placeholder="full name as it appears on card" class="form-control" />
+                <section className="py-2">
+                    <div className="container px-4 px-lg-5 mt-5">
+                        <div className="row">
+                            <hr className="col-12" />
+                            <h5 className="col-3">Payment Method</h5>
+                            <div className="col-9">
+                                <div className="col-6 mt-2">
+                                    <label className="form-label" htmlFor="cardName">Name on card</label>
+                                    <input id="cardName" name="cardName" placeholder="full name as it appears on card" className="form-control" />
                                     
                                 </div>
-                                <div class="col-6 mt-2">
-                                    <label for="cardNumber" class="form-label">Credit card number</label>
-                                    <input id="cardNumber" name="cardNumber" placeholder="0000 0000 0000 0000" class="form-control" />
+                                <div className="col-6 mt-2">
+                                    <label htmlFor="cardNumber" className="form-label">Credit card number</label>
+                                    <input id="cardNumber" name="cardNumber" placeholder="0000 0000 0000 0000" className="form-control" />
                                    
                                 </div>
-                                <div class="col-6 mt-2"></div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label for="cardExpiration" class="form-label">Expiration</label>
-                                        <select id="cardExpiration" name="cardExpiration" class="form-control"></select>
+                                <div className="col-6 mt-2"></div>
+                                <div className="row">
+                                    <div className="col-md-3">
+                                        <label htmlFor="cardExpiration" className="form-label">Expiration</label>
+                                        <select id="cardExpiration" name="cardExpiration" className="form-control"></select>
                                         
                                     </div>
-                                    <div class="col-md-3">
-                                        <label for="cardCCV" class="form-label">CVV</label>
-                                        <input id="cardCCV" name="cardCCV" class="form-control" placeholder="000" />
+                                    <div className="col-md-3">
+                                        <label htmlFor="cardCCV" className="form-label">CVV</label>
+                                        <input id="cardCCV" name="cardCCV" className="form-control" placeholder="000" />
                                        
                                     </div>
                                 </div>
@@ -113,20 +113,20 @@ export default function Checkout() {
                     </div>
                 </section>
 
-                <section class="py-2">
-                    <div class="container px-4 px-lg-5 mt-5">
-                        <div class="row">
-                            <hr class="col-12" />
-                            <h5 class="col-3">Items</h5>
-                            <div class="col-9">
+                <section className="py-2">
+                    <div className="container px-4 px-lg-5 mt-5">
+                        <div className="row">
+                            <hr className="col-12" />
+                            <h5 className="col-3">Items</h5>
+                            <div className="col-9">
 
-                                <table class="table gx-2 gx-lg-2 mt-2">
+                                <table className="table gx-2 gx-lg-2 mt-2">
                                     <thead>
                                         <tr>
                                             <th></th>
                                             <th></th>
-                                            <th class="text-end">Qty</th>
-                                            <th class="text-end">Price</th>
+                                            <th className="text-end">Qty</th>
+                                            <th className="text-end">Price</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -138,25 +138,25 @@ export default function Checkout() {
                     </div>    
                 </section>
 
-                <section class="py-4 mb-2">
-                    <div class="container px-4 px-lg-5 mt-5">
-                        <div class="row">
-                            <hr class="col-12" />
-                            <div class="col-2">
-                                <input type="hidden" asp-route-orderId="@Model.Order.Id"/>
-                                <button type="submit" class="btn btn-warning btn-lg">Place Order</button>                    
+                <section className="py-4 mb-2">
+                    <div className="container px-4 px-lg-5 mt-5">
+                        <div className="row">
+                            <hr className="col-12" />
+                            <div className="col-2">
+                                <input type="hidden" name="orderId" value={order.id}/>
+                                <button type="submit" className="btn btn-warning btn-lg">Place Order</button>                    
                             </div>
-                            <div class="col-10">
-                                <div class="row">
-                                    <h4 class="text-danger col-8">Order Total ${order.totalPrice}</h4>
-                                    <div class="col-4">
-                                        <div class="row row-cols-2">
-                                            <div class="col text-end">Items: {itemCount}</div>
-                                            <div class="col text-end">${order.subtotal.toFixed(2)}</div>
-                                            <div class="col text-end underline">Tax</div>
-                                            <div class="col text-end underline">${order.tax.toFixed(2)}</div>
-                                            <div class="col text-end">Order Total</div>
-                                            <div class="col text-end">${order.totalPrice.toFixed(2)}</div>
+                            <div className="col-10">
+                                <div className="row">
+                                    <h4 className="text-danger col-8">Order Total ${order.totalPrice.toFixed(2)}</h4>
+                                    <div className="col-4">
+                                        <div className="row row-cols-2">
+                                            <div className="col text-end">Items: {itemCount}</div>
+                                            <div className="col text-end">${order.subtotal.toFixed(2)}</div>
+                                            <div className="col text-end underline">Tax</div>
+                                            <div className="col text-end underline">${order.tax.toFixed(2)}</div>
+                                            <div className="col text-end">Order Total</div>
+                                            <div className="col text-end">${order.totalPrice.toFixed(2)}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -166,7 +166,7 @@ export default function Checkout() {
                     </div>
                 </section>
 
-            </form>
+            </Form>
 
         </>
     )
