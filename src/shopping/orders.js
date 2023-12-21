@@ -1,19 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 export async function loader() {
-    const url = API_URL + "/Shopping/Orders";
+    const urlStatuses = API_URL + "/Shopping/OrderStatuses";
+    const urlOrders = API_URL + "/Shopping/Orders";
+    let statuses = [];
     let orders = [];
-    await fetch(url)
-        .then(request => request.json())
-        .then(data => {orders = data})
-        .catch(err => console.error(err));
+    await Promise.all([
+        fetch(urlStatuses)
+            .then(request => request.json())
+            .then(data => { statuses = data })
+            .catch(err => console.error(err)), 
+        
+        fetch(urlOrders)
+            .then(request => request.json())
+            .then(data => {orders = data})
+            .catch(err => console.error(err))
+    ]);
 
     console.info("Orders: " + orders.length);
-    return orders;
+    console.info("Statuses: " + statuses.length);
+    return [statuses, orders];
 }
 
 function toLocalDateTime(utc) {
@@ -26,11 +36,25 @@ function toLocalDateTime(utc) {
 
 export default function Orders() {
 
-    const orders = useLoaderData();
+    const [statuses, orders] = useLoaderData();
+    const [selectedStatus, setSelectedStatus] = useState(null);
+    const [displayOrders, setDisplayOrders] = useState(orders); 
+
+    useEffect(() => {
+        if(selectedStatus) {
+            setDisplayOrders(orders.filter(o => o.orderHistory[o.orderHistory.length - 1].orderStatusId === Number(selectedStatus)));
+        } else {    
+            setDisplayOrders(orders);
+        }
+    }, [selectedStatus, orders]);
+
+    const statusesTemplate = statuses.map((status) => (
+        <option value={status.id} key={status.id}>{status.name}</option>
+    ));
     
     const ordersTemplate = [];
     
-    for (const order of orders) {
+    for (const order of displayOrders) {
         
         const zeroPadding = Math.max(8 - order.id.toString().length, 0);
         const orderId = '0'.repeat(zeroPadding) + order.id.toString();
@@ -74,14 +98,12 @@ export default function Orders() {
                             <form className="form">
 
                                 <div className="row justify-content-end">
-                                    <div className="col-2">
-                                        <select className="form-control">
+                                    <div className="col-3">
+                                        <select className="form-control" onChange={e => setSelectedStatus(e.target.value)}>
                                             <option value="">ALL</option>
+                                            {statusesTemplate}
                                         </select>
-                                    </div>
-                                    <div className="col-2">
-                                        <button type="submit" className="btn btn-outline-dark mt-auto">Filter</button>
-                                    </div>
+                                    </div>                                    
                                 </div>
                             </form>
                                             
