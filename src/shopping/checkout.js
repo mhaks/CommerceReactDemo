@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useLoaderData, redirect } from "react-router";
 import { Link, Form, } from "react-router-dom";
 
@@ -29,7 +29,29 @@ export default function Checkout() {
 
     const order = useLoaderData();
     const itemCount = order.orderProducts?.length;
+
+    const [cardName, setCardName] = useState('');
+    const [cardNumber, setCardNumber] = useState('');
+    const [cardExpiration, setCardExpiration] = useState('');
+    const [cardCCV, setCardCCV] = useState('');
+    const [errors, setErrors] = useState({});
     
+
+    const expirationTemplate = [];
+    let currentDate = new Date();
+    let month = currentDate.getMonth();
+    let year = currentDate.getYear();
+    for (let i = 0; i < 48; i++) {
+        let exp = `${month + 1}/${year.toString().slice(-2)}`;
+        console.info(exp);
+        expirationTemplate.push(<option key={exp} value={exp}>{exp}</option>);
+        month++;
+        if (month === 12) {
+            month = 0;
+            year++;
+        }
+    }
+
 
     const productsTemplate = order.orderProducts?.map((item, index) => (
         <tr key={item.id}>
@@ -50,6 +72,44 @@ export default function Checkout() {
         </tr>
     ));
 
+    function handleSubmit(event) {
+        event.preventDefault();
+        const newErrors = {};
+        
+        if(!cardName) {
+            newErrors.cardName = 'Name on card is required';
+        } else if(cardName.length < 3) {
+            newErrors.cardName = 'Name on card must be at least 3 characters';
+        }
+        
+        if(!cardNumber) {
+            newErrors.cardNumber = 'Card number is required';
+        } else if(cardNumber.length < 16) {
+            newErrors.cardNumber = 'Card number must be at least 16 characters';
+        }
+        if(!cardExpiration) newErrors.cardExpiration = 'Expiration is required';    
+        if(!cardCCV) {
+            newErrors.cardCCV = 'CCV is required'; 
+        }
+        else if(cardCCV.length < 3) {
+            newErrors.cardCCV = 'CCV must be at least 3 characters';
+        }
+        
+        setErrors(newErrors);
+        if(Object.keys(newErrors).length > 0) 
+            return;
+
+        event.target.submit();
+    }
+
+    function inputNumberOnly(input, length) {        
+        input.value = input.value.replace(/[^0-9]/g, '').slice(0, length);
+    }
+
+    function inputNameOnly(input) {
+        input.value = input.value.replace(/[^A-Za-z\s'-.]/g, '');
+    }
+
     return (
         <>
              <section className="bg-dark py-1">
@@ -60,7 +120,7 @@ export default function Checkout() {
                 </div>
             </section>
 
-            <Form method="post" className="form">
+            <Form method="post" className="form" onSubmit={handleSubmit}>
                 <section className="py-2">
                     <div className="container px-4 px-lg-5 mt-5">
                         <div className="row">
@@ -87,25 +147,28 @@ export default function Checkout() {
                             <div className="col-9">
                                 <div className="col-6 mt-2">
                                     <label className="form-label" htmlFor="cardName">Name on card</label>
-                                    <input id="cardName" name="cardName" placeholder="full name as it appears on card" className="form-control" />
-                                    
+                                    <input id="cardName" name="cardName" placeholder="full name as it appears on card" className="form-control"  value={cardName} onChange={e => setCardName(e.target.value)} onInput={e => inputNameOnly(e.target)} maxLength={100}/>
+                                    {errors.cardName && <p className="text-danger text-sm-start">{errors.cardName}</p>}
                                 </div>
                                 <div className="col-6 mt-2">
                                     <label htmlFor="cardNumber" className="form-label">Credit card number</label>
-                                    <input id="cardNumber" name="cardNumber" placeholder="0000 0000 0000 0000" className="form-control" />
-                                   
+                                    <input id="cardNumber" name="cardNumber" placeholder="0000 0000 0000 0000" maxLength={16} onInput={ e => inputNumberOnly(e.target, 16)} className="form-control" value={cardNumber} onChange={e => setCardNumber(e.target.value)}/>
+                                    {errors.cardNumber && <p className="text-danger text-sm-start">{errors.cardNumber}</p>}
                                 </div>
                                 <div className="col-6 mt-2"></div>
                                 <div className="row">
                                     <div className="col-md-3">
                                         <label htmlFor="cardExpiration" className="form-label">Expiration</label>
-                                        <select id="cardExpiration" name="cardExpiration" className="form-control"></select>
-                                        
+                                        <select id="cardExpiration" name="cardExpiration" className="form-control" value={cardExpiration} onChange={e => setCardExpiration(e.target.value)}>
+                                            <option value="" >MM/YY</option>
+                                            {expirationTemplate}
+                                        </select>
+                                        {errors.cardExpiration && <p className="text-danger text-sm-start">{errors.cardExpiration}</p>}
                                     </div>
                                     <div className="col-md-3">
                                         <label htmlFor="cardCCV" className="form-label">CVV</label>
-                                        <input id="cardCCV" name="cardCCV" className="form-control" placeholder="000" />
-                                       
+                                        <input id="cardCCV" name="cardCCV" className="form-control" placeholder="000" maxLength={3} onInput={ e => inputNumberOnly(e.target, 3)} value={cardCCV} onChange={e => setCardCCV(e.target.value)}/>
+                                        {errors.cardCCV && <p className="text-danger text-sm-start">{errors.cardCCV}</p>}
                                     </div>
                                 </div>
                             </div>
