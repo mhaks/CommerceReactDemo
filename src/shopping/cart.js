@@ -1,13 +1,13 @@
 import React from "react";
 
-import { useLoaderData } from "react-router";
-import { Link } from "react-router-dom";
+import { useLoaderData, useActionData, redirect } from "react-router";
+import { Link, Form, } from "react-router-dom";
 
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 export async function loader() {
-    const cartUrl = `${API_URL}/Shopping/Cart`;
+    const cartUrl = `${API_URL}/Shopping/Cart/`;
     let order = null;
     await fetch(cartUrl)
         .then (response => response.json())
@@ -17,9 +17,35 @@ export async function loader() {
     return order;
 }
 
+export async function action({ request }) {
+
+    const cartEditUrl = `${API_URL}/Shopping/Cart/Edit/`;
+    const formData = await request.formData();
+    const action = formData.get("action");
+    if (action === 'update') {
+        const errors = {};
+        const orderProductId = formData.get("orderProductId");
+        const quantity = formData.get("quantity");
+        if(!quantity) {
+            errors.quantity = 'Quantity is required';
+            errors.orderProductId = orderProductId;
+            return errors;
+        }
+    }
+    
+    await fetch(cartEditUrl, {
+        method: "PUT",
+        body: formData,
+    })    
+    .catch(err => console.error(err));
+
+    return redirect("/cart/");
+}
+
 export default function Cart() {
 
     const order = useLoaderData();
+    const errors = useActionData();
 
     const itemCount = order.orderProducts?.length;
     const subTotal = order.orderProducts?.reduce((accum, current) => accum + (current.quantity * current.product.price), 0);
@@ -35,33 +61,37 @@ export default function Cart() {
                 </Link>
                 
                 <p className="fw-bolder">{item.product.brand}</p>                                       
-                <form method="post" >
+                <Form method="put">
                     <div className="row">                        
-                            <input type="hidden" name="orderId" value={item.orderId}/>
-                            <input type="hidden" name="orderProductId" value={item.id}/>
-                            <div className="col-3">
-                                <div className="input-group my-3">
-                                    <span className="input-group-text" id="basic-addon1" >Qty</span>
-                                    <input type="number" className="form-control" aria-label="Quantity" aria-describedby="basic-addon1" defaultValue={item.quantity} name="quantity" />
-                                </div>
+                        <input type="hidden" name="orderId" value={item.orderId}/>
+                        <input type="hidden" name="orderProductId" value={item.id}/>
+                        <div className="col-3">
+                            <div className="input-group my-3">
+                                <span className="input-group-text" id="basic-addon1" >Qty</span>
+                                <input type="number" className="form-control" aria-label="Quantity" aria-describedby="basic-addon1" defaultValue={item.quantity} name="quantity" min="0" max="50"/>                                
                             </div>
-                            <div className="col-3 my-3">
+                            
+                        </div>
+                        <div className="col-3 my-3">
                             <button type="submit" className="btn btn-outline-dark mt-auto" name="action" value="update">Update</button>
-                            </div>                    
+                            {errors?.quantity && <p className="text-danger text-sm-start">{errors.quantity}</p>}
+                        </div> 
+
+                                           
                     </div>
-                </form>
+                </Form>
             </td>
 
             <td className="align-middle text-end">                                        
-                <div className="fw-bolder">${item.product.price}</div>
+                <div className="fw-bolder">${item.product.price.toFixed(2)}</div>
             </td>
             <td className="align-middle">
-                <form method="post" >
+                <Form method="put">
                     <input type="hidden" name="orderId" value={item.orderId}/>
                     <input type="hidden" name="orderProductId" value={item.id}/>
                     <input type="hidden" name="quantity" value="0"/>
                     <button type="submit" className="btn btn-outline-danger mt-auto" name="action" value="remove">Remove</button>
-                </form>
+                </Form>
             </td>
             
         </tr>
@@ -92,7 +122,7 @@ export default function Cart() {
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td className="fw-bolder text-end" colSpan="4">{`Subtotal ${itemCount} items: ${subTotal}`}</td>
+                                            <td className="fw-bolder text-end" colSpan="4">{`Subtotal ${itemCount} items: $${subTotal.toFixed(2)}`}</td>
                                         </tr>
                                     </tfoot>
                                 </table>

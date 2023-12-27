@@ -6,7 +6,7 @@ import ErrorPage from "./error-page";
 import Home, {loader as homeLoader } from "./shopping/home";
 import Search, {loader as searchLoader, action as searchAction } from "./shopping/search";
 import Product, {loader as productLoader, action as productAction } from "./shopping/product";
-import Cart, {loader as cartLoader } from "./shopping/cart";
+import Cart, {loader as cartLoader, action as cartAction } from "./shopping/cart";
 import Checkout, {loader as checkoutLoader, action as checkoutAction } from "./shopping/checkout";
 import Orders, { loader as ordersLoader } from "./shopping/orders";
 import Order, { loader as orderLoader} from "./shopping/order";
@@ -39,6 +39,7 @@ export const router = createBrowserRouter([
                 path: "cart",
                 element: <Cart/>,
                 loader: cartLoader,
+                action: cartAction,
             },
             {
                 path: "checkout",
