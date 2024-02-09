@@ -7,7 +7,7 @@ import {router} from './routes';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 
-const API_URL = process.env.REACT_APP_API_URL;
+//const API_URL = process.env.REACT_APP_API_URL;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

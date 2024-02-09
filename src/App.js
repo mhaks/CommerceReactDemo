@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import { Outlet, useLoaderData } from "react-router";
 import Header from "./shopping/header";
 import Footer from "./footer";
