@@ -30,7 +30,7 @@ export async function loader({request}){
 
     console.log(categories);
     console.log(categoryId);
-    return [products, categories, searchString, categoryId];
+    return [products, searchString];
 }
 
 
@@ -47,9 +47,9 @@ export async function action({request, params}) {
 
 
 export default function Search() {
-    const [products, categories, searchString, categoryId] = useLoaderData();
+    const [products, searchString] = useLoaderData();
 
-    const category = categories.find(item => item.id === categoryId);
+    //const category = categories.find(item => item.id === categoryId);
     //const searchDisplay = (category) ? `${category.title} - ${searchString}` : `${searchString}`;
     const searchDisplay = `${searchString}`;
 
