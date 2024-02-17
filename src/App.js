@@ -1,9 +1,9 @@
 import React, { useState }  from "react";
-import { Outlet, Route, Routes, useLoaderData } from "react-router";
+import { Outlet,  useLoaderData } from "react-router";
 import ShoppingHeader from "./shopping/header";
-import Shopping from "./shopping/home";
+//import Shopping from "./shopping/home";
 import AdminHeader from "./admin/header";
-import Admin from "./admin/home"; // Import the Admin component
+//import Admin from "./admin/home"; // Import the Admin component
 import Footer from "./footer";
 import {AdminContext, ShopperContext} from "./contexts";
 
