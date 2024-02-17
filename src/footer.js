@@ -11,7 +11,7 @@ export default function Footer() {
             <div className="container">
                 <div className="row">
                     <div className="col-md-4 offset-md-4 text-center">
-                        <UserSwitch/>
+                        <UserSwitch />
                     </div>
                 </div>
                 <p className="text-center text-white ">Copyright &copy; Mhaks 2023</p>
