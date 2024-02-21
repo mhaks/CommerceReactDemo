@@ -10,7 +10,13 @@ import Cart, {loader as cartLoader, action as cartAction } from "./shopping/cart
 import Checkout, {loader as checkoutLoader, action as checkoutAction } from "./shopping/checkout";
 import Orders, { loader as ordersLoader } from "./shopping/orders";
 import Order, { loader as orderLoader} from "./shopping/order";
-import Admin from "./admin/home";
+
+import Admin, {loader as adminLoader} from "./admin/home";
+import AdminOrders, {loader as adminOrdersLoader} from "./admin/orders";
+import AdminOrder, {loader as adminOrderLoader} from "./admin/order";
+import AdminProducts from "./admin/products";
+import AdminCategories from "./admin/categories";
+import AdminCustomers from "./admin/customers";
 
 export const router = createBrowserRouter([
     {
@@ -61,6 +67,29 @@ export const router = createBrowserRouter([
             {
                 path: "admin",
                 element: <Admin/>,
+                loader: adminLoader,
+            },
+            {
+                path: "admin/orders",
+                element: <AdminOrders/>,
+                loader: adminOrdersLoader,
+            },
+            {
+                path: "admin/orders/:id",
+                element: <AdminOrder/>,
+                loader: adminOrderLoader,
+            },
+            {
+                path: "admin/products",
+                element: <AdminProducts/>,
+            },
+            {
+                path: "admin/categories",
+                element: <AdminCategories/>,
+            },
+            {
+                path: "admin/customers",
+                element: <AdminCustomers/>,
             },
         ],
     },

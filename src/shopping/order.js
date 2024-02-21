@@ -1,6 +1,7 @@
 import React from "react";
 import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";
+import { toLocalDateTime } from "../site";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -15,12 +16,6 @@ export async function loader({params}) {
     return order;
 }
 
-function toLocalDateTime(utc) {
-    const utcDate = new Date(utc);
-    const offsetMinutes = new Date().getTimezoneOffset();
-    const localDT = new Date(utcDate.getTime() - offsetMinutes * 60000);
-    return localDT.toLocaleString();
-}
 
 export default function Order() {
     const order = useLoaderData();
