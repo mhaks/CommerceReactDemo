@@ -16,7 +16,7 @@ import AdminOrders, {loader as adminOrdersLoader} from "./admin/orders";
 import AdminOrder, {loader as adminOrderLoader} from "./admin/order";
 import AdminProducts from "./admin/products";
 import AdminCategories from "./admin/categories";
-import AdminCustomers from "./admin/customers";
+import AdminCustomers, {loader as adminCustomersLoader} from "./admin/customers";
 
 export const router = createBrowserRouter([
     {
@@ -75,7 +75,7 @@ export const router = createBrowserRouter([
                 loader: adminOrdersLoader,
             },
             {
-                path: "admin/orders/:id",
+                path: "admin/order/:id",
                 element: <AdminOrder/>,
                 loader: adminOrderLoader,
             },
@@ -90,6 +90,7 @@ export const router = createBrowserRouter([
             {
                 path: "admin/customers",
                 element: <AdminCustomers/>,
+                loader: adminCustomersLoader,
             },
         ],
     },

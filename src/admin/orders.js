@@ -7,15 +7,17 @@ import { toLocalDateTime } from "../site";
 //const API_URL = process.env.REACT_APP_API_URL;
 
 export async function loader() {
-    return null;
+    let orderStates = [];
+    let orders = [];
+    return {orders, orderStates};
 }
 
 export default function Orders() {
-    const {data, orderStates} = useLoaderData();
+    const {orders, orderStates} = useLoaderData();
 
     const ordersTemplate = [];
 
-    data.orders.forEach(order => {
+    orders.forEach(order => {
         const zeroPadding = Math.max(8 - order.id.toString().length, 0);
         const orderId = '0'.repeat(zeroPadding) + order.id.toString();
 
