@@ -14,9 +14,12 @@ import Order, { loader as orderLoader} from "./shopping/order";
 import Admin, {loader as adminLoader} from "./admin/home";
 import AdminOrders, {loader as adminOrdersLoader} from "./admin/orders";
 import AdminOrder, {loader as adminOrderLoader} from "./admin/order";
-import AdminProducts from "./admin/products";
-import AdminCategories from "./admin/categories";
+import AdminProducts, {loader as adminProductsLoader} from "./admin/products";
+import AdminProduct, {loader as adminProductLoader} from "./admin/product";
+import AdminCategories, {loader as adminCategoriesLoader} from "./admin/categories";
+import AdminCategory, {loader as adminCategoryLoader} from "./admin/category";
 import AdminCustomers, {loader as adminCustomersLoader} from "./admin/customers";
+import AdminCustomer, {loader as adminCustomerLoader} from "./admin/customer";
 
 export const router = createBrowserRouter([
     {
@@ -82,15 +85,32 @@ export const router = createBrowserRouter([
             {
                 path: "admin/products",
                 element: <AdminProducts/>,
+                loader: adminProductsLoader,
+            },
+            {
+                path: "admin/product/:id",
+                element: <AdminProduct/>,
+                loader: adminProductLoader,
             },
             {
                 path: "admin/categories",
                 element: <AdminCategories/>,
+                loader: adminCategoriesLoader,
+            },
+            {
+                path: "admin/category/:id",
+                element: <AdminCategory/>,
+                loader: adminCategoryLoader,
             },
             {
                 path: "admin/customers",
                 element: <AdminCustomers/>,
                 loader: adminCustomersLoader,
+            },
+            {
+                path: "admin/customer/:id",
+                element: <AdminCustomer/>,
+                loader: adminCustomerLoader,
             },
         ],
     },

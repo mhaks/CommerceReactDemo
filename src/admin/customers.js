@@ -8,7 +8,7 @@ export async function loader() {
     return customers;
 }
 
-export default function Home() {
+export default function Customers() {
     const {customers} = useLoaderData();
     return (
         <>
@@ -30,7 +30,7 @@ export default function Home() {
                             </form>
                         </div>
                         <div className="col text-end">
-                            <Link to="./customerEdit" className="btn btn-outline-dark mt-auto text-center">Create New Customer</Link>
+                            <Link to="./customer" className="btn btn-outline-dark mt-auto text-center">Create New Customer</Link>
                         </div>
                     </div>
                         
