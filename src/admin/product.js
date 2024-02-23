@@ -31,7 +31,7 @@ export default function Product() {
                                     <input type="hidden" asp-for="Id" />
                                     <div className="form-group mt-3">
                                         <label htmlFor="Title" className="control-label">Title</label>
-                                        <input name="Title" id="Title" className="form-control" />                                       
+                                        <input name="Title" id="Title" className="form-control" value={product?.Title} />                                       
                                     </div>
                                     <div className="form-group mt-3">
                                         <label htmlFor="Description" className="control-label">Description</label>
