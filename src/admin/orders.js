@@ -4,11 +4,22 @@ import { Link } from "react-router-dom";
 import "../site.js";
 import { toLocalDateTime } from "../site";
 
-//const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL;
 
 export async function loader() {
     let orderStates = [];
     let orders = [];
+    await Promise.all(
+        [
+            fetch(`${API_URL}/Admin/OrderStates`)
+            .then(response => response.json())
+            .then(data => orderStates = data),
+
+            fetch(`${API_URL}/Admin/Orders`)
+            .then(response => response.json())
+            .then(data => orders = data)
+        ]   
+    )
     return {orders, orderStates};
 }
 
@@ -18,29 +29,27 @@ export default function Orders() {
     const ordersTemplate = [];
 
     orders.forEach(order => {
-        const zeroPadding = Math.max(8 - order.id.toString().length, 0);
-        const orderId = '0'.repeat(zeroPadding) + order.id.toString();
+        const zeroPadding = Math.max(8 - order.orderId.toString().length, 0);
+        const orderId = '0'.repeat(zeroPadding) + order.orderId.toString();
+        
+        const orderDateTime = toLocalDateTime(order.orderDate);
+        
+        const statusDateTime = toLocalDateTime(order.statusDate);
 
-        const ordered = order.orderHistory.find(h => h.orderStatusId === 2);
-        const orderDateTime = toLocalDateTime(ordered.orderDate);
-
-        const current = order.orderHistory[order.orderHistory.length - 1];
-        const lastDateTime = toLocalDateTime(current.orderDate);
-
-        const nextState = orderStates.find(s => s.value === (current.orderStatusId + 1).toString());
+        const nextState = (order.statusId + 1).toString();
 
         ordersTemplate.push(
-            <tr key={order.id}>
-                <td><Link to={'../order/' + order.id} target="_blank" >{orderId}</Link></td>
-                <td>order.user.userName</td>
+            <tr key={order.orderId}>
+                <td><Link to={'../admin/order/' + order.orderId} target="_blank" >{orderId}</Link></td>
+                <td>{order.userName}</td>
                 <td>{orderDateTime}</td>
-                <td>{current.orderStatus.name}</td>
-                <td>{lastDateTime}</td>
+                <td>{order.statusName}</td>
+                <td>{statusDateTime}</td>
                 <td>
                     {nextState &&
                         <form method="post">
-                            <input type="hidden" value={order.id} name="orderId" />
-                            <input type="hidden" value={nextState.value} name="orderStateId" />
+                            <input type="hidden" value={order.orderId} name="orderId" />
+                            <input type="hidden" value={nextState} name="orderStateId" />
                             <button type="submit" className="btn btn-outline-dark mt-auto text-center">{nextState.text}</button>
                         </form>
                     }                    
@@ -78,6 +87,7 @@ export default function Orders() {
                         <div className="col mx-1">
                             <select className="form-control" asp-items="@Model.OrderStatusSelect" asp-for="@Model.OrderStatusFilterId">
                                 <option value="">ALL</option>
+                                {orderStates.map(s => <option key={s.id} value={s.name}>{s.name}</option>)}
                             </select>
                         </div>
 
