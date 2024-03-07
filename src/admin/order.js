@@ -3,15 +3,21 @@ import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom"; 
 import { toLocalDateTime } from "../site";   
 
-//const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL;
 
-export async function loader() {
-    let order = {};
+export async function loader({params}) {
+    const url = `${API_URL}/Admin/Order/${params.id}`;
+    let order = null;
+    await fetch(url)
+        .then(response => response.json())
+        .then(data => order = data)
+        .catch(err => console.error(err));
+
     return order;
 }
 
 export default function Order() {
-    const {order} = useLoaderData();
+    const order = useLoaderData();
     console.log(order);
 
 
