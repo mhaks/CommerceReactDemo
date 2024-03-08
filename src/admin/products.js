@@ -2,71 +2,96 @@ import React from "react";
 import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 export async function loader() {
     let products = [];
+    let categories = [];
+    let brands = [];
+
+    await Promise.all([
+        fetch(`${API_URL}/admin/products`)
+            .then(response => response.json())
+            .then(data => { products = data; })
+            .catch(error => console.log(error)), 
+
+        fetch(`${API_URL}/shopping/categories`)
+            .then(response => response.json())
+            .then(data => { categories = data; })
+            .catch(error => console.log(error)),
+
+        fetch(`${API_URL}/shopping/brands`) 
+            .then(response => response.json())
+            .then(data => { brands = data; })
+            .catch(error => console.log(error))
+    ]);
  
-    return products;
+    return {products, categories, brands};
 }
 
 export default function Products() {
-    const {products} = useLoaderData();
+    const {products, categories, brands} = useLoaderData();
 
     return (
         <>
-            <section class="bg-dark py-1">
-                <div class="container px-4 px-lg-5">
-                    <div class="text-left text-white">
-                        <h5 class="fw-bolder">Products</h5>
+            <section className="bg-dark py-1">
+                <div className="container px-4 px-lg-5">
+                    <div className="text-left text-white">
+                        <h5 className="fw-bolder">Products</h5>
                     </div>
                 </div>
             </section>
 
-            <section class="py-2">
-                <div class="container px-4 px-lg-5 mt-5">
-                    <div class="row ">
+            <section className="py-2">
+                <div className="container px-4 px-lg-5 mt-5">
+                    <div className="row ">
 
-                        <div class="row mt-4">
-                            <div class="col-10">
-                                <form class="d-flex">                       
-                                    <div class="row row-cols-2">
-                                        <div class="col">
-                                            <label class="form-label" for="SearchString">Search</label>
-                                            <input type="text" class="form-control" name="SearchString" placeholder="search text" />
+                        <div className="row mt-4">
+                            <div className="col-10">
+                                <form className="d-flex">                       
+                                    <div className="row row-cols-2">
+                                        <div className="col">
+                                            <label className="form-label" htmlFor="SearchString">Search</label>
+                                            <input type="text" className="form-control" name="SearchString" id="SearchString" placeholder="search text" />
                                         </div>
-                                        <div class="col">
-                                            <label class="form-label" for="ActiveFilterId">Active</label>
-                                            <select class="form-control" name="ActiveFilterId">
+                                        <div className="col">
+                                            <label className="form-label" htmlFor="ActiveFilterId">Active</label>
+                                            <select className="form-control" name="ActiveFilterId" id="ActiveFilterId">
                                                 <option value="">ALL</option>
+                                                <option value="1">Active</option>
+                                                <option value="0">Inactive</option>
                                             </select>
                                         </div>
 
-                                        <div class="col">
-                                            <label class="form-label" for="BrandFilterString">Brand</label>
-                                            <select class="form-control" name="BrandFilterString">
+                                        <div className="col">
+                                            <label className="form-label" htmlFor="BrandFilterString">Brand</label>
+                                            <select className="form-control" name="BrandFilterString" id="BrandFilterString">
                                                 <option value="">ALL</option>
+                                                {brands?.map((item) => <option key={item} value={item}>{item}</option>)}
                                             </select>
                                         </div>
-                                        <div class="col">
-                                            <label class="form-label" for="CategoryFilterId">Category</label>
-                                            <select class="form-control" name="CategoryFilterId" >
+                                        <div className="col">
+                                            <label className="form-label" htmlFor="CategoryFilterId">Category</label>
+                                            <select className="form-control" name="CategoryFilterId" id="CategoryFilterId">
                                                 <option value="">ALL</option>
+                                                {categories?.map((item) => <option key={item.id} value={item.id}>{item.title}</option>)}
                                             </select>
                                         </div>
                                         
-                                        <div class="col"></div>
-                                        <div class="col mt-2 text-end">
-                                            <input type="submit" class="form-control btn btn-outline-dark mt-auto text-center" value="Filter" />
+                                        <div className="col"></div>
+                                        <div className="col mt-2 text-end">
+                                            <input type="submit" className="form-control btn btn-outline-dark mt-auto text-center" value="Filter" />
                                         </div>
                                     </div>                  
                                 </form>
                             </div>
-                            <div class="col-2 text-end">
-                                <Link to="./product" class="btn btn-outline-dark mt-auto text-center">Create New Product</Link>                   
+                            <div className="col-2 text-end">
+                                <Link to="./product" className="btn btn-outline-dark mt-auto text-center">Create New Product</Link>                   
                             </div>
                         </div>
 
-                        <div class="row mt-4">
-                            <table class="table">
+                        <div className="row mt-4">
+                            <table className="table">
                             <thead>
                                 <tr>
                                     <th>
@@ -112,28 +137,28 @@ export default function Products() {
                                     return (
                                         <tr key={item.id}>
                                             <td>
-                                                {item.oitle}
+                                                {item.title}
                                             </td>
                                             <td>
                                                 {item.brand}
                                             </td>
                                             <td>
-                                                {item.modelNumber}
+                                                {item.model}
                                             </td>
                                             <td>
-                                                {item.productCategory.title}
+                                                {item.category}
                                             </td>
-                                            <td class="text-end">
+                                            <td className="text-end">
                                                 ${item.price.toFixed(2)  }
                                             </td>
-                                            <td class="text-end">
+                                            <td className="text-end">
                                                 {item.availableQty}
                                             </td>
-                                            <td class="text-center">
+                                            <td className="text-center">
                                                 {item.isActive}
                                             </td>           
-                                            <td class="text-end">
-                                                <Link to={"./product/" + item.Id} class="btn btn-outline-dark mt-auto text-center">Edit</Link>
+                                            <td className="text-end">
+                                                <Link to={"../admin/product/" + item.id} className="btn btn-outline-dark mt-auto text-center">Edit</Link>
                                             </td>
                                         </tr>
                                     );
