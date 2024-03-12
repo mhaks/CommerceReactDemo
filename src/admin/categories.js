@@ -3,15 +3,23 @@ import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";    
 
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 export async function loader() {   
     let categories = [];
+    await fetch(`${API_URL}/shopping/categories`)
+            .then(response => response.json())
+            .then(data => { categories = data; })
+            .catch(error => console.log(error));
+
+    console.log(categories);
     return categories;
 }
 
 export default function Categories() {
 
-    const {categories} = useLoaderData();
-
+    const categories = useLoaderData();
+    
     return (
         <>
             <section className="bg-dark py-1">
@@ -55,20 +63,20 @@ export default function Categories() {
                             </thead>
                             <tbody>
                                 {
-                                    categories?.Map((item, index) => {
+                                    categories.map((item, index) => {
                                         return (
-                                            <tr key={item.Id}>
-                                                <td>
-                                                    {item.Title}
-                                                </td>
-                                                <td>
-                                                    {item.Id}
-                                                </td>
-                                                <td style={{textAlign: "right"}}>
-                                                    <Link to={"./category/" + item.Id} className="btn btn-outline-dark mt-auto text-center">Edit</Link>
-                                                </td>
-                                            </tr>
-                                        );
+                                        <tr key={item.id}>
+                                            <td>
+                                                {item.title}
+                                            </td>
+                                            <td>
+                                                {item.id}
+                                            </td>
+                                            <td style={{textAlign: "right"}}>
+                                                <Link to={"../admin/category/" + item.id} className="btn btn-outline-dark mt-auto text-center">Edit</Link>
+                                            </td>
+                                        </tr>
+                                        )
                                     })
                                 }                                
                             </tbody>

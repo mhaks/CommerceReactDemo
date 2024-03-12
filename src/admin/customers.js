@@ -2,14 +2,20 @@ import React from "react";
 import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";
 
+const API_URL = process.env.REACT_APP_API_URL;
 
 export async function loader() {
     let customers = [];
+    await fetch(`${API_URL}/admin/customers`)
+            .then(response => response.json())
+            .then(data => { customers = data; })
+            .catch(error => console.log(error));
+    
     return customers;
 }
 
 export default function Customers() {
-    const {customers} = useLoaderData();
+    const customers = useLoaderData();
     return (
         <>
             <section className="bg-dark py-1">
@@ -72,7 +78,7 @@ export default function Customers() {
                             {customers?.map((customer) => (
                                 <tr key={customer.id}>
                                     <td>
-                                        <Link to={`/admin/customer/${customer.id}`}>{customer.name}</Link>
+                                        <Link to={`../admin/customer/${customer.id}`}>{customer.fullName}</Link>
                                     </td>
                                     <td>
                                         {customer.address1}
@@ -84,19 +90,19 @@ export default function Customers() {
                                         {customer.city}
                                     </td>
                                     <td>
-                                        {customer.state}
+                                        {customer.stateLocation.name}
                                     </td>
                                     <td>
-                                        {customer.zipCode}
+                                        {customer.postalCode}
                                     </td>
                                     <td>
-                                        {customer.phone}
+                                        {customer.phoneNumber}
                                     </td>
                                     <td>
                                         {customer.email}
                                     </td>
                                     <td>
-                                        {customer.username}
+                                        {customer.userName}
                                     </td>
                                     <td>
                                         <Link to={`/admin/customerEdit/${customer.id}`} className="btn btn-outline-dark mt-auto text-center">Edit</Link>
