@@ -3,13 +3,18 @@ import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";  
 
 
-export async function loader() {
+export async function loader({params}) {
     let category = {};
+
+    await fetch(`${process.env.REACT_APP_API_URL}/admin/category/${params.id}`)
+        .then(response => response.json())
+        .then(data => { category = data; })
+        .catch(error => console.log(error));
     return category;
 }
 
 export default function Category () {
-    const {category} = useLoaderData();
+    const category = useLoaderData();
 
     return(
         <>
@@ -27,10 +32,10 @@ export default function Category () {
                     <div className="row">
                         <div className="col-md-4">
                             <form method="post">
-                                <input type="hidden" name={category?.id} />                                
+                                <input type="hidden" name={category.id} />                                
                                 <div className="form-group mt-3">
                                     <label className="control-label" htmlFor="Title">Title</label>
-                                    <input className="form-control" name="Title" id="Title" />                                    
+                                    <input className="form-control" name="Title" id="Title" value={category.title}/>                                    
                                 </div>           
                                 <div className="form-group mt-3 row">
                                     <div className="col">

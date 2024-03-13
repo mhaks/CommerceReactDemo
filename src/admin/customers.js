@@ -78,7 +78,7 @@ export default function Customers() {
                             {customers?.map((customer) => (
                                 <tr key={customer.id}>
                                     <td>
-                                        <Link to={`../admin/customer/${customer.id}`}>{customer.fullName}</Link>
+                                        {customer.fullName}
                                     </td>
                                     <td>
                                         {customer.address1}
@@ -105,7 +105,7 @@ export default function Customers() {
                                         {customer.userName}
                                     </td>
                                     <td>
-                                        <Link to={`/admin/customerEdit/${customer.id}`} className="btn btn-outline-dark mt-auto text-center">Edit</Link>
+                                        <Link to={`/admin/customer/${customer.id}`} className="btn btn-outline-dark mt-auto text-center">Edit</Link>
                                     </td>
                                 </tr>
                             ))}
