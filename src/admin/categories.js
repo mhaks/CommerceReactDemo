@@ -3,11 +3,10 @@ import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";    
 
 
-const API_URL = process.env.REACT_APP_API_URL;
 
 export async function loader() {   
     let categories = [];
-    await fetch(`${API_URL}/shopping/categories`)
+    await fetch(`${process.env.REACT_APP_API_URL}/shopping/categories`)
             .then(response => response.json())
             .then(data => { categories = data; })
             .catch(error => console.log(error));
@@ -41,7 +40,7 @@ export default function Categories() {
                             </form>
                         </div>
                         <div className="col text-end">
-                            <Link to="./category" className="btn btn-outline-dark mt-auto text-center">Create New Category</Link>
+                            <Link to="../admin/category/0" className="btn btn-outline-dark mt-auto text-center">Create New Category</Link>
                         </div>
                     </div>
                             

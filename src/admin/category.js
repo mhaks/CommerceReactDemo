@@ -1,9 +1,14 @@
 import React from "react";
-import { useLoaderData } from "react-router";
-import { Link } from "react-router-dom";  
+import { useLoaderData, useActionData, redirect } from "react-router";
+import { Link, Form } from "react-router-dom";  
 
 
 export async function loader({params}) {
+    
+    if (params.id === "0") {
+        return {id: 0, title: ""};
+    }
+
     let category = {};
 
     await fetch(`${process.env.REACT_APP_API_URL}/admin/category/${params.id}`)
@@ -13,8 +18,38 @@ export async function loader({params}) {
     return category;
 }
 
+export async function action({request}) {
+    const formData = await request.formData();
+    const id = formData.get("id");
+    const title = formData.get("title");
+
+    title.trim();
+
+    console.log(`form title: ${title} id: ${id}`);
+
+    
+    console.log(id);
+    if(title === "" ) {
+        const errors = {};
+        errors.title = 'Title is required';        
+        return errors;
+    }
+
+    await fetch(`${process.env.REACT_APP_API_URL}/Admin/Category/`, {
+        method: 'PUT',
+        body: formData
+    })
+    .catch(err => { 
+        console.error(err); 
+        return;
+    });
+
+    return redirect("../admin/categories/");
+}
+
 export default function Category () {
     const category = useLoaderData();
+    const errors = useActionData();
 
     return(
         <>
@@ -31,11 +66,12 @@ export default function Category () {
 
                     <div className="row">
                         <div className="col-md-4">
-                            <form method="post">
-                                <input type="hidden" name={category.id} />                                
+                            <Form method="put">
+                                <input type="hidden" name="id" value={category.id} />                                
                                 <div className="form-group mt-3">
                                     <label className="control-label" htmlFor="Title">Title</label>
-                                    <input className="form-control" name="Title" id="Title" value={category.title}/>                                    
+                                    <input className="form-control" name="title" id="title" defaultValue={category.title}/>                                    
+                                    {errors?.title && <p className="text-danger text-sm-start">{errors.title}</p>}
                                 </div>           
                                 <div className="form-group mt-3 row">
                                     <div className="col">
@@ -45,7 +81,7 @@ export default function Category () {
                                         <Link to="../admin/categories">Back to List</Link>
                                     </div>
                                 </div>
-                            </form>
+                            </Form>
                         </div>
                     </div>
                     
