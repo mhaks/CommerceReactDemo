@@ -28,6 +28,11 @@ export default function Orders() {
 
     const ordersTemplate = [];
 
+    const nextProcess = [ {id: 3, name: 'Ship'}, 
+                            {id: 4, name: 'Deliver'}, 
+                            {id: 5, name: 'Return'} ];        
+
+
     orders.forEach(order => {
         const zeroPadding = Math.max(8 - order.orderId.toString().length, 0);
         const orderId = '0'.repeat(zeroPadding) + order.orderId.toString();
@@ -36,7 +41,8 @@ export default function Orders() {
         
         const statusDateTime = toLocalDateTime(order.statusDate);
 
-        const nextState = (order.statusId + 1).toString();
+        const nextStateId = order.statusId + 1;
+        const nextState = nextProcess.find(s => s.id === nextStateId);
 
         ordersTemplate.push(
             <tr key={order.orderId}>
@@ -50,7 +56,7 @@ export default function Orders() {
                         <form method="post">
                             <input type="hidden" value={order.orderId} name="orderId" />
                             <input type="hidden" value={nextState} name="orderStateId" />
-                            <button type="submit" className="btn btn-outline-dark mt-auto text-center">{nextState.text}</button>
+                            <button type="submit" className="btn btn-outline-dark mt-auto text-center">{nextState.name}</button>
                         </form>
                     }                    
                 </td>
@@ -74,8 +80,7 @@ export default function Orders() {
             <div className="container px-4 px-lg-5 mt-5">
 
                 <div className="row mt-4">
-                    <form className="form d-flex" method="get">
-                        
+                    <form className="form d-flex" method="get">                        
                         <div className="col mx-1">
                             <input type="text" className="form-control" asp-for="OrderSearchId" placeholder="order id" />
                         </div>
@@ -93,8 +98,7 @@ export default function Orders() {
 
                         <div className="col mx-1">
                             <button type="submit" className="btn btn-outline-dark mt-auto text-center">Search</button>
-                        </div>
-                    
+                        </div>                    
                     </form>
                 </div>
 

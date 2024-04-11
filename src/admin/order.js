@@ -22,26 +22,26 @@ export default function Order() {
 
 
     const historyTemplate = [];
-    for (let idx = 0; idx < order?.orderHistory.length; idx++) {
-        var item = order.orderHistory[idx];
-        let cls = idx === order.orderHistory.length -1 ? "col fw-bolder" : "col fw-lighter";
+    for (let idx = 0; idx < order?.history.length; idx++) {
+        var item = order.history[idx];
+        let cls = idx === order.history.length -1 ? "col fw-bolder" : "col fw-lighter";
 
         historyTemplate.push(
             <div key={item.id} className="row row-cols-2">
                 <div className={cls}>{toLocalDateTime(item.orderDate)}</div>
-                <div className={cls}>{item.orderStatus.name}</div>
+                <div className={cls}>{item.orderStatus}</div>
             </div>            
         );
     }   
 
-    const productsTemplate = order?.orderProducts?.map((item, index) => (
+    const productsTemplate = order?.products?.map((item, index) => (
         <tr key={item.id}>
             <td><img className="" src="https://dummyimage.com/90x60/dee2e6/6c757d.jpg" alt="{item.product.title}" /></td>
             <td>
-            <Link to={'../product/' + item.product.id} target="_blank">
-                        <h5 className="fw-bolder">{item.product.title}</h5>
+            <Link to={'../product/' + item.id} target="_blank">
+                        <h5 className="fw-bolder">{item.title}</h5>
                </Link>
-                <p className="fw-bolder">{item.product.brand}</p>
+                <p className="fw-bolder">{item.brand}</p>
             </td>
 
             <td className="align-middle text-end">
@@ -85,12 +85,12 @@ export default function Order() {
                         <hr className="col-12" />
                         <h5 className="col-3">Shipping Address</h5>
                         <div className="col-9">
-                            <div>{order?.user.fullName}</div>
-                            <div>{order?.user.address1}</div>
-                            {order?.user.address2.length > 0 && <div>{order?.user.address2}</div>}                           
-                            <div>{order?.user.city}, {order?.user.stateLocation.abbreviation} {order?.user.postalCode}</div>
-                            <div>{order?.user.Email}</div>
-                            <div>{order?.user.PhoneNumber}</div>
+                            <div>{order.customer.firstName},&nbsp;{order.customer.lastName}</div>
+                            <div>{order.customer.address1}</div>
+                            {order.customer.address2.length > 0 && <div>{order.customer.address2}</div>}                           
+                            <div>{order.customer.city}, {order.customer.stateLocation} {order.customer.postalCode}</div>
+                            <div>{order.customer.email}</div>
+                            <div>{order.customer.phoneNumber}</div>
                         </div>
                     </div>
                 </div>
@@ -106,12 +106,12 @@ export default function Order() {
                                 <h4 className="text-danger col-8">Order Total ${order?.totalPrice.toFixed(2)}</h4>
                                 <div className="col-4">
                                     <div className="row row-cols-2">
-                                        <div className="col text-end">Items {order?.orderProducts.length}</div>
-                                        <div className="col text-end">${order?.subtotal.toFixed(2)}</div>
+                                        <div className="col text-end">Items {order.products.length}</div>
+                                        <div className="col text-end">${order.subtotal.toFixed(2)}</div>
                                         <div className="col text-end underline">Tax</div>
-                                        <div className="col text-end underline">${order?.tax.toFixed(2)}</div>
+                                        <div className="col text-end underline">${order.tax.toFixed(2)}</div>
                                         <div className="col text-end">Order Total</div>
-                                        <div className="col text-end">${order?.totalPrice.toFixed(2)}</div>
+                                        <div className="col text-end">${order.totalPrice.toFixed(2)}</div>
                                     </div>
                                 </div>
                             </div>
