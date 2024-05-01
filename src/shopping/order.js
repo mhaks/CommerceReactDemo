@@ -3,23 +3,21 @@ import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";
 import { toLocalDateTime } from "../site";
 
-const API_URL = process.env.REACT_APP_API_URL;
-
 export async function loader({params}) {
-    const url = `${API_URL}/Shopping/Order?id=${params.id}`;
+    const url = `${process.env.REACT_APP_API_URL}/Shopping/Orders/${params.id}`;
+    console.log(url);
     let order = null;
     await fetch(url)
         .then(response => response.json())
         .then(json => {order = json;})
         .catch(err => console.error(err));
-
     return order;
 }
 
 
 export default function Order() {
     const order = useLoaderData();
-    console.log(order.orderHistory);
+    console.log(order);
 
     const historyTemplate = [];
     for (let idx = 0; idx < order.orderHistory.length; idx++) {
@@ -94,7 +92,7 @@ export default function Order() {
                         <div className="col-9">
                             <div>{order.user.fullName}</div>
                             <div>{order.user.address1}</div>
-                            {order.user.address2.length > 0 && <div>{order.user.address2}</div>}                           
+                            {order.user?.address2.length > 0 && <div>{order.user.address2}</div>}                           
                             <div>{order.user.city}, {order.user.stateLocation.abbreviation} {order.user.postalCode}")</div>
                             <div>{order.user.email}</div>
                             <div>{order.user.phoneNumber}</div>

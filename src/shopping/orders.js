@@ -30,8 +30,8 @@ export async function loader() {
 
 
 export default function Orders() {
-
     const [statuses, orders] = useLoaderData();
+
     const [selectedStatus, setSelectedStatus] = useState(null);
     const [displayOrders, setDisplayOrders] = useState(orders); 
 
@@ -55,10 +55,10 @@ export default function Orders() {
         const orderId = '0'.repeat(zeroPadding) + order.id.toString();
 
         const ordered = order.orderHistory.find(h => h.orderStatusId === 2);
-        const orderDateTime = toLocalDateTime(ordered.orderDate);
+        const orderDateTime = ordered != null ? toLocalDateTime(ordered.orderDate) : "";
 
         const current = order.orderHistory[order.orderHistory.length - 1];
-        const lastDateTime = toLocalDateTime(current.orderDate);
+        const lastDateTime = current != null ? toLocalDateTime(current.orderDate) : "";
 
         ordersTemplate.push(
             <tr key={order.id}>

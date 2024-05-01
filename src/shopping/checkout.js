@@ -25,7 +25,7 @@ export async function action({request}) {
         return errors;
     }
 
-    const updateCartUrl = `${API_URL}/Shopping/Checkout`;
+    const updateCartUrl = `${API_URL}/Shopping/Cart/Checkout`;
     console.info('url: ' + updateCartUrl);
     await fetch(updateCartUrl, {
         method: 'POST',
@@ -35,7 +35,7 @@ export async function action({request}) {
     .catch(err => console.error(err));
     console.info('action complete');
 
-    return redirect('../orders/');
+    return redirect('../orders');
 }   
 
 function validateForm(formData) {

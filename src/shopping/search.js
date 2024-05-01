@@ -10,8 +10,8 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 export async function loader({request}){
     const reqUrl = new URL(request.url);
-    const searchUrl = `${API_URL}/Shopping/Search?${reqUrl.searchParams}`;
-    const categoriesUrl = `${API_URL}/Shopping/ProductCategories`;
+    const searchUrl = `${API_URL}/Shopping/Products/Search?${reqUrl.searchParams}`;
+    const categoriesUrl = `${API_URL}/Shopping/Categories`;
     
     let products = [];
     await fetch(searchUrl)

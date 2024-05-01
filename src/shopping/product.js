@@ -6,7 +6,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 
 export async function loader({params}) {
-    const url = API_URL + `/Shopping/Product?id=${params.id}`;
+    const url = API_URL + `/Shopping/Products/${params.id}`;
     let product = null;
     await fetch(url)
         .then(response => response.json())
