@@ -2,7 +2,6 @@ import React from "react";
 import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";
 
-const API_URL = process.env.REACT_APP_API_URL;
 
 export async function loader({params}) {
     let product = {};
@@ -10,17 +9,17 @@ export async function loader({params}) {
     let brands = [];
 
     await Promise.all([
-        fetch(`${API_URL}/admin/product/${params.id}`)
+        fetch(`${process.env.REACT_APP_API_URL}/admin/product/${params.id}`)
             .then(response => response.json())
             .then(data => { product = data; })
             .catch(error => console.log(error)),
         
-        fetch(`${API_URL}/shopping/categories`)
+        fetch(`${process.env.REACT_APP_API_URL}/shopping/categories`)
             .then(response => response.json())
             .then(data => { categories = data; })
             .catch(error => console.log(error)),
 
-        fetch(`${API_URL}/shopping/brands`) 
+        fetch(`${process.env.REACT_APP_API_URL}/shopping/brands`) 
             .then(response => response.json())
             .then(data => { brands = data; })
             .catch(error => console.log(error))    

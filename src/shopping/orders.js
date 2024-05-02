@@ -3,11 +3,10 @@ import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";
 import { toLocalDateTime } from "../site";
 
-const API_URL = process.env.REACT_APP_API_URL;
 
 export async function loader() {
-    const urlStatuses = API_URL + "/Shopping/OrderStatuses";
-    const urlOrders = API_URL + "/Shopping/Orders";
+    const urlStatuses = `${process.env.REACT_APP_API_URL}/Shopping/OrderStatuses`;
+    const urlOrders = `${process.env.REACT_APP_API_URL}/Shopping/Orders`;
     let statuses = [];
     let orders = [];
     await Promise.all([

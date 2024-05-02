@@ -2,11 +2,10 @@ import React from "react";
 import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";
 
-const API_URL = process.env.REACT_APP_API_URL;
 
 export async function loader() {
     let customers = [];
-    await fetch(`${API_URL}/admin/customers`)
+    await fetch(`${process.env.REACT_APP_API_URL}/admin/customers`)
             .then(response => response.json())
             .then(data => { customers = data; })
             .catch(error => console.log(error));

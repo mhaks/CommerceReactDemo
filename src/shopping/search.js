@@ -5,25 +5,27 @@ import { Link, Form, } from "react-router-dom";
 
 import SearchBar from "./searchbar";
 
-const API_URL = process.env.REACT_APP_API_URL;
 
 
 export async function loader({request}){
     const reqUrl = new URL(request.url);
-    const searchUrl = `${API_URL}/Shopping/Products/Search?${reqUrl.searchParams}`;
-    const categoriesUrl = `${API_URL}/Shopping/Categories`;
+    const searchUrl = `${process.env.REACT_APP_API_URL}/Shopping/Products/Search?${reqUrl.searchParams}`;
+    const categoriesUrl = `${process.env.REACT_APP_API_URL}/Shopping/Categories`;
     
     let products = [];
-    await fetch(searchUrl)
-        .then(response => response.json())
-        .then(json => {products = json;})
-        .catch(error => console.error(error));
-
     let categories = [];
-    await fetch(categoriesUrl)
-        .then(response => response.json())
-        .then(json => {categories = json;})
-        .catch(err => { console.error(err)});
+    await Promise.all([
+        fetch(searchUrl)
+            .then(response => response.json())
+            .then(json => {products = json;})
+            .catch(error => console.error(error)),
+   
+        fetch(categoriesUrl)
+            .then(response => response.json())
+            .then(json => {categories = json;})
+            .catch(err => { console.error(err)})
+    ]);
+    
 
     const searchString = reqUrl.searchParams.get('SearchString');
     const categoryId = reqUrl.searchParams.get('CategoryId');
@@ -36,7 +38,7 @@ export async function loader({request}){
 
 export async function action({request, params}) {
     const formData = await request.formData(); 
-    const addCartUrl = `${API_URL}/Shopping/Cart/Add`;
+    const addCartUrl = `${process.env.REACT_APP_API_URL}/Shopping/Cart/Add`;
     await fetch(addCartUrl, {
         method: 'PUT',
                 body: formData,

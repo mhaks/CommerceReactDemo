@@ -4,18 +4,17 @@ import { Link } from "react-router-dom";
 import "../site.js";
 import { toLocalDateTime } from "../site";
 
-const API_URL = process.env.REACT_APP_API_URL;
 
 export async function loader() {
     let orderStates = [];
     let orders = [];
     await Promise.all(
         [
-            fetch(`${API_URL}/Admin/OrderStates`)
+            fetch(`${process.env.REACT_APP_API_URL}/Admin/OrderStates`)
             .then(response => response.json())
             .then(data => orderStates = data),
 
-            fetch(`${API_URL}/Admin/Orders`)
+            fetch(`${process.env.REACT_APP_API_URL}/Admin/Orders`)
             .then(response => response.json())
             .then(data => orders = data)
         ]   

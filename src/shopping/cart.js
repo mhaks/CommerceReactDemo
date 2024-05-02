@@ -4,10 +4,10 @@ import { useLoaderData, useActionData, redirect } from "react-router";
 import { Link, Form, } from "react-router-dom";
 
 
-const API_URL = process.env.REACT_APP_API_URL;
+
 
 export async function loader() {
-    const cartUrl = `${API_URL}/Shopping/Cart/`;
+    const cartUrl = `${process.env.REACT_APP_API_URL}/Shopping/Cart/`;
     let order = null;
     await fetch(cartUrl)
         .then (response => response.json())
@@ -19,7 +19,7 @@ export async function loader() {
 
 export async function action({ request }) {
 
-    const cartEditUrl = `${API_URL}/Shopping/Cart/Edit/`;
+    const cartEditUrl = `${process.env.REACT_APP_API_URL}/Shopping/Cart/Edit/`;
     const formData = await request.formData();
     const action = formData.get("action");
     if (action === 'update') {

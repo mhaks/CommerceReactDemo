@@ -1,7 +1,6 @@
 import React from "react";
 import { useLoaderData } from "react-router";
 
-const API_URL = process.env.REACT_APP_API_URL;
 
 export async function loader() {
     let sales = [];
@@ -13,37 +12,37 @@ export async function loader() {
     let inventory = [];
 
     await Promise.all([
-        fetch(`${API_URL}/admin/SalesSummary?Days=7`)
+        fetch(`${process.env.REACT_APP_API_URL}/admin/SalesSummary?Days=7`)
         .then(response => response.json())
         .then(data => sales = data)
         .catch(error => console.log(error)),
 
-        fetch(`${API_URL}/admin/ordersummary?Status=1`)
+        fetch(`${process.env.REACT_APP_API_URL}/admin/ordersummary?Status=1`)
             .then(response => response.json())
             .then(data => carts = data)
             .catch(error => console.log(error)),
         
-        fetch(`${API_URL}/admin/ordersummary?Status=2`)
+        fetch(`${process.env.REACT_APP_API_URL}/admin/ordersummary?Status=2`)
             .then(response => response.json())
             .then(data => processing = data)
             .catch(error => console.log(error)),
         
-        fetch(`${API_URL}/admin/ordersummary?Status=3`)
+        fetch(`${process.env.REACT_APP_API_URL}/admin/ordersummary?Status=3`)
             .then(response => response.json())
             .then(data => shipped = data)
             .catch(error => console.log(error)),
         
-        fetch(`${API_URL}/admin/ordersummary?Status=4&Days=7`)
+        fetch(`${process.env.REACT_APP_API_URL}/admin/ordersummary?Status=4&Days=7`)
             .then(response => response.json())
             .then(data => delivered = data)
             .catch(error => console.log(error)),
         
-        fetch(`${API_URL}/admin/ordersummary?Status=5&Days=7`)
+        fetch(`${process.env.REACT_APP_API_URL}/admin/ordersummary?Status=5&Days=7`)
             .then(response => response.json())
             .then(data => returns = data)
             .catch(error => console.log(error)),
 
-        fetch(`${API_URL}/admin/inventorysummary?Threshold=10`)
+        fetch(`${process.env.REACT_APP_API_URL}/admin/inventorysummary?Threshold=10`)
             .then(response => response.json())
             .then(data => inventory = data)
             .catch(error => console.log(error))

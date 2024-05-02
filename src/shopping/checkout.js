@@ -2,10 +2,10 @@ import React from "react";
 import { useLoaderData, useActionData, redirect } from "react-router";
 import { Link, Form, } from "react-router-dom";
 
-const API_URL = process.env.REACT_APP_API_URL;
+
 
 export async function loader() {
-    const cartUrl = `${API_URL}/Shopping/Cart`;
+    const cartUrl = `${process.env.REACT_APP_API_URL}/Shopping/Cart`;
     let order = null;
     await fetch(cartUrl)
         .then (response => response.json())
@@ -25,7 +25,7 @@ export async function action({request}) {
         return errors;
     }
 
-    const updateCartUrl = `${API_URL}/Shopping/Cart/Checkout`;
+    const updateCartUrl = `${process.env.REACT_APP_API_URL}/Shopping/Cart/Checkout`;
     console.info('url: ' + updateCartUrl);
     await fetch(updateCartUrl, {
         method: 'POST',

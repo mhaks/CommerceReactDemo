@@ -1,11 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { Form } from "react-router-dom";
 
-const API_URL = process.env.REACT_APP_API_URL;
-
-
-
-
 
 export default function SearchBar() {
 
@@ -18,12 +13,11 @@ export default function SearchBar() {
         <button className="dropdown-item" type="button" value={item.id} key={item.id} >{item.title} </button>
     ));
 
-    useEffect(() => {
-        const url = API_URL + '/Shopping/Categories';
-        fetch(url)
-        .then(response => response.json())
-        .then(json => setCategories(json))
-        .catch(err => { console.error(err)});
+    useEffect(() => {        
+        fetch(`${process.env.REACT_APP_API_URL}/Shopping/Categories`)
+            .then(response => response.json())
+            .then(json => setCategories(json))
+            .catch(err => { console.error(err)});
     }, []);
 
 

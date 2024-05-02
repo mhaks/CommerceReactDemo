@@ -2,11 +2,9 @@ import React from "react";
 import { useLoaderData, redirect } from "react-router";
 import { Form, } from "react-router-dom";
 
-const API_URL = process.env.REACT_APP_API_URL;
-
 
 export async function loader({params}) {
-    const url = API_URL + `/Shopping/Products/${params.id}`;
+    const url = `${process.env.REACT_APP_API_URL}/Shopping/Products/${params.id}`;
     let product = null;
     await fetch(url)
         .then(response => response.json())
@@ -19,7 +17,7 @@ export async function loader({params}) {
 
 export async function action({request, params}) {
     const formData = await request.formData(); 
-    const addCartUrl = `${API_URL}/Shopping/Cart/Add`;
+    const addCartUrl = `${process.env.REACT_APP_API_URL}/Shopping/Cart/Add`;
     await fetch(addCartUrl, {
         method: 'PUT',
                 body: formData,

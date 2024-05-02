@@ -3,10 +3,9 @@ import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom"; 
 import { toLocalDateTime } from "../site";   
 
-const API_URL = process.env.REACT_APP_API_URL;
 
 export async function loader({params}) {
-    const url = `${API_URL}/Admin/Order/${params.id}`;
+    const url = `${process.env.REACT_APP_API_URL}/Admin/Orders/${params.id}`;
     let order = null;
     await fetch(url)
         .then(response => response.json())

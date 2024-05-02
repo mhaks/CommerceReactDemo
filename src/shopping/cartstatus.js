@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const API_URL = process.env.REACT_APP_API_URL;
+
 
 export default function CartStatus() {
 
     const [count, setCount] = useState(0);
 
     useEffect(() => {
-        const url = API_URL + '/Shopping/Cart/Count';
+        const url = `${process.env.REACT_APP_API_URL}/Shopping/Cart/Count`;
         fetch(url)
         .then(resp => resp.json())
         .then(data => { setCount(data)})
