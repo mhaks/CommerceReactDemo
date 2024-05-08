@@ -5,17 +5,39 @@ import { Link, Form } from "react-router-dom";
 export async function loader({params}) {
     let customer = {};
     let states = [];
-    await Promise.all([
-        fetch(`${process.env.REACT_APP_API_URL}/admin/states`)
+
+    if (params.id === "0") {
+        customer.id = "";
+        customer.userName = "";
+        customer.firstName = "";
+        customer.lastName = "";
+        customer.address1 = "";
+        customer.address2 = "";
+        customer.city = "";
+        customer.stateLocationId = "";
+        customer.postalCode = "";
+        customer.phoneNumber = "";
+        customer.email = "";
+        
+        await fetch(`${process.env.REACT_APP_API_URL}/admin/statelocations`)
                 .then(response => response.json())
                 .then(data => { states = data; })
-                .catch(error => console.log(error)),
-
-        fetch(`${process.env.REACT_APP_API_URL}/admin/customer/${params.id}`)
-                .then(response => response.json())
-                .then(data => { customer = data; })
-                .catch(error => console.log(error)),
-    ]);
+                .catch(error => console.log(error));
+    }
+    else
+    {
+        await Promise.all([
+            fetch(`${process.env.REACT_APP_API_URL}/admin/statelocations`)
+                    .then(response => response.json())
+                    .then(data => { states = data; })
+                    .catch(error => console.log(error)),
+    
+            fetch(`${process.env.REACT_APP_API_URL}/admin/customers/${params.id}`)
+                    .then(response => response.json())
+                    .then(data => { customer = data; })
+                    .catch(error => console.log(error)),
+        ]);
+    }
 
     return {customer, states};  
 }
@@ -31,10 +53,12 @@ export async function action({request}) {
     }
 
     // put
-    await fetch(`${process.env.REACT_APP_API_URL}/Admin/Customer/`, {
+    await fetch(`${process.env.REACT_APP_API_URL}/admin/customers/`, {
         method: 'PUT',
         body: formData
     })
+    .then(response => { response.json(); })
+    .then(data => { console.log(data); })
     .catch(err => { 
         console.error(err); 
         return;

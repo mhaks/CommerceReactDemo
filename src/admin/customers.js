@@ -35,7 +35,7 @@ export default function Customers() {
                             </form>
                         </div>
                         <div className="col text-end">
-                            <Link to="./customer" className="btn btn-outline-dark mt-auto text-center">Create New Customer</Link>
+                            <Link to="/admin/customer/0" className="btn btn-outline-dark mt-auto text-center">Create New Customer</Link>
                         </div>
                     </div>
                         
