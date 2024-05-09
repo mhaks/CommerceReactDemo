@@ -85,7 +85,7 @@ export default function Products() {
                                 </form>
                             </div>
                             <div className="col-2 text-end">
-                                <Link to="./product" className="btn btn-outline-dark mt-auto text-center">Create New Product</Link>                   
+                                <Link to="/admin/product/0" className="btn btn-outline-dark mt-auto text-center">Create New Product</Link>                   
                             </div>
                         </div>
 
