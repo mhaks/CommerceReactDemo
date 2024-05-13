@@ -1,6 +1,6 @@
 import React from "react";
-import { useLoaderData } from "react-router";
-import { Link } from "react-router-dom";
+import { useLoaderData, useActionData, redirect } from "react-router";
+import { Link, Form } from "react-router-dom";
 import "../site.js";
 import { toLocalDateTime } from "../site";
 
@@ -20,6 +20,21 @@ export async function loader() {
         ]   
     )
     return {orders, orderStates};
+}
+
+export async function action({request})
+{
+    const formData = await request.formData();
+    const orderId = formData.get("orderId");
+    const stateId = formData.get("stateId");
+
+    await fetch(`${process.env.REACT_APP_API_URL}/Admin/Orders/${orderId}/State/${stateId}`, {
+        method: 'PUT',
+        body: formData
+    });
+
+    return redirect('/admin/orders');
+
 }
 
 export default function Orders() {
@@ -52,11 +67,11 @@ export default function Orders() {
                 <td>{statusDateTime}</td>
                 <td>
                     {nextState &&
-                        <form method="post">
+                        <Form method="put">
                             <input type="hidden" value={order.orderId} name="orderId" />
-                            <input type="hidden" value={nextState} name="orderStateId" />
+                            <input type="hidden" value={nextState.id} name="stateId" />
                             <button type="submit" className="btn btn-outline-dark mt-auto text-center">{nextState.name}</button>
-                        </form>
+                        </Form>
                     }                    
                 </td>
             </tr>
