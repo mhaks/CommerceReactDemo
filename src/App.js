@@ -10,12 +10,8 @@ import {AdminContext, ShopperContext} from "./contexts";
 
 
 
-
-const API_URL = process.env.REACT_APP_API_URL;
-
 export async function loader() {
-  console.log("app loader");
-
+  console.info(`REACT_APP_API_URL: ${process.env.REACT_APP_API_URL}`);
   
   let cartItemCount = 0;
 
@@ -40,7 +36,7 @@ export async function loader() {
 
 
 
-  await fetch(API_URL + '/Shopping/Cart/Count')
+  await fetch(process.env.REACT_APP_API_URL + '/Shopping/Cart/Count')
       .then(resp => resp.json())
       .then(data => { cartItemCount = data;});
 
@@ -51,6 +47,7 @@ export async function loader() {
 
 
 export default function App() {  
+  
   const {cartItemCount} = useLoaderData();
   const [admin, setAdmin] = useState(false);
 
