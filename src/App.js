@@ -70,8 +70,13 @@ export default function App() {
           </>
         )
       }
-      <Outlet />
+      
+     <main>
+      <Outlet/>
+     </main>
+
       <Footer />
+
         
     </ShopperContext.Provider>
     </AdminContext.Provider>
