@@ -1,52 +1,42 @@
-import React from "react";
-import { useLoaderData, redirect } from "react-router";
-import { Link, Form } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLoaderData } from "react-router";
+import { Link } from "react-router-dom";
 import "../site.js";
 import { toLocalDateTime } from "../site";
 
 
 export async function loader() {
     let orderStates = [];
-    let orders = [];
-    await Promise.all(
-        [
-            fetch(`${process.env.REACT_APP_API_URL}/Admin/OrderStates`)
+    
+    await fetch(`${process.env.REACT_APP_API_URL}/Admin/OrderStates`)
             .then(response => response.json())
-            .then(data => orderStates = data),
+            .then(data => orderStates = data);
 
-            fetch(`${process.env.REACT_APP_API_URL}/Admin/Orders`)
-            .then(response => response.json())
-            .then(data => orders = data)
-        ]   
-    )
-    return {orders, orderStates};
+    return orderStates;
 }
 
-export async function action({request})
-{
-    const formData = await request.formData();
-    const orderId = formData.get("orderId");
-    const stateId = formData.get("stateId");
-
-    await fetch(`${process.env.REACT_APP_API_URL}/Admin/Orders/${orderId}/State/${stateId}`, {
-        method: 'PUT',
-        body: formData
-    });
-
-    return redirect('/admin/orders');
-
-}
 
 export default function Orders() {
-    const {orders, orderStates} = useLoaderData();
+    const orderStates = useLoaderData();
+    const [orders, setOrders] = useState([]);
 
-    const ordersTemplate = [];
+    useEffect(() => { 
+        const fetchOrders = async () => {
+            fetch(`${process.env.REACT_APP_API_URL}/Admin/Orders`)
+                .then(response => response.json())
+                .then(data => setOrders(data))
+                .catch(error => console.error('Error:', error));
+        };
+
+        fetchOrders();
+    }, []);
+    
 
     const nextProcess = [ {id: 3, name: 'Ship'}, 
                             {id: 4, name: 'Deliver'}, 
                             {id: 5, name: 'Return'} ];        
 
-
+    const ordersTemplate = [];
     orders.forEach(order => {
         const zeroPadding = Math.max(8 - order.orderId.toString().length, 0);
         const orderId = '0'.repeat(zeroPadding) + order.orderId.toString();
@@ -67,17 +57,58 @@ export default function Orders() {
                 <td>{statusDateTime}</td>
                 <td>
                     {nextState &&
-                        <Form method="put">
+                        <form onSubmit={handleProcess}>
                             <input type="hidden" value={order.orderId} name="orderId" />
                             <input type="hidden" value={nextState.id} name="stateId" />
                             <button type="submit" className="btn btn-outline-dark mt-auto text-center">{nextState.name}</button>
-                        </Form>
+                        </form>
                     }                    
                 </td>
             </tr>
         );
     });    
 
+    async function handleFilter(event) {
+        event.preventDefault();
+        await filterOrders(event.target);  
+    }
+
+    async function filterOrders(formFilter)
+    {
+        const formData = new FormData(formFilter);        
+        const orderId = formData.get("orderId");
+        const customerId = formData.get("customerId");
+        const statusId = formData.get("statusId");
+
+        const url = new URL(`${process.env.REACT_APP_API_URL}/Admin/Orders`);
+        if (orderId)
+            url.searchParams.append("orderId", orderId);
+        if (customerId)
+            url.searchParams.append("customerId", customerId);
+        if (statusId)
+            url.searchParams.append("statusId", statusId);
+
+        console.log("order filter: " + url);
+        await fetch(url)
+                .then(response => response.json())
+                .then(data => setOrders(data))
+                .catch(error => console.error('Error:', error)); 
+    }
+
+    async function handleProcess(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const orderId = formData.get("orderId");
+        const stateId = formData.get("stateId");
+    
+        await fetch(`${process.env.REACT_APP_API_URL}/Admin/Orders/${orderId}/State/${stateId}`, {
+            method: 'PUT',
+            body: formData
+        }).catch(error => console.error('Error:', error));  
+        
+        const formFilter = document.getElementById("formFilter");
+        await filterOrders(formFilter);         
+    }
 
     return (
        <>
@@ -94,19 +125,19 @@ export default function Orders() {
             <div className="container px-4 px-lg-5 mt-5">
 
                 <div className="row mt-4">
-                    <form className="form d-flex" method="get">                        
+                    <form className="form d-flex" onSubmit={handleFilter} id="formFilter">                        
                         <div className="col mx-1">
-                            <input type="text" className="form-control" asp-for="OrderSearchId" placeholder="order id" />
+                            <input type="text" className="form-control" name="orderId" placeholder="order id" />
                         </div>
 
                         <div className="col mx-1">
-                            <input type="text" className="form-control" asp-for="CustomerSearchId" placeholder="customer id" />
+                            <input type="text" className="form-control" name="customerId" placeholder="customer id" />
                         </div>
 
                         <div className="col mx-1">
-                            <select className="form-control" asp-items="@Model.OrderStatusSelect" asp-for="@Model.OrderStatusFilterId">
+                            <select className="form-control" name="statusId">
                                 <option value="">ALL</option>
-                                {orderStates.map(s => <option key={s.id} value={s.name}>{s.name}</option>)}
+                                {orderStates.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                             </select>
                         </div>
 

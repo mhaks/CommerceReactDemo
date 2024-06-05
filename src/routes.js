@@ -12,7 +12,7 @@ import Orders, { loader as ordersLoader } from "./shopping/orders";
 import Order, { loader as orderLoader} from "./shopping/order";
 
 import Admin, {loader as adminLoader} from "./admin/home";
-import AdminOrders, {loader as adminOrdersLoader, action as adminOrdersAction} from "./admin/orders";
+import AdminOrders, {loader as adminOrdersLoader} from "./admin/orders";
 import AdminOrder, {loader as adminOrderLoader} from "./admin/order";
 import AdminProducts, {loader as adminProductsLoader} from "./admin/products";
 import AdminProduct, {loader as adminProductLoader, action as adminProductAction} from "./admin/product";
@@ -75,8 +75,7 @@ export const router = createBrowserRouter([
             {
                 path: "admin/orders",
                 element: <AdminOrders/>,
-                loader: adminOrdersLoader,
-                action: adminOrdersAction,
+                loader: adminOrdersLoader,               
             },
             {
                 path: "admin/order/:id",
