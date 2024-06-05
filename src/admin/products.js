@@ -1,19 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";
 
 
+
 export async function loader() {
-    let products = [];
     let categories = [];
     let brands = [];
 
     await Promise.all([
-        fetch(`${process.env.REACT_APP_API_URL}/admin/products`)
-            .then(response => response.json())
-            .then(data => { products = data; })
-            .catch(error => console.log(error)), 
-
         fetch(`${process.env.REACT_APP_API_URL}/shopping/categories`)
             .then(response => response.json())
             .then(data => { categories = data; })
@@ -25,11 +20,47 @@ export async function loader() {
             .catch(error => console.log(error))
     ]);
  
-    return {products, categories, brands};
+    return {categories, brands};
 }
 
 export default function Products() {
-    const {products, categories, brands} = useLoaderData();
+    const {categories, brands} = useLoaderData();
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        async function fetchProducts() {
+            await fetch(`${process.env.REACT_APP_API_URL}/admin/products`)
+                .then(response => response.json())
+                .then(data => setProducts(data))
+                .catch(error => console.error('Error:', error));
+        }
+
+        fetchProducts();
+        
+    }, []);
+
+    async function handleFilter(event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const search = formData.get('search');
+        const isActive = formData.get('isActive');
+        const brand = formData.get('brand');
+        const categoryId = formData.get('categoryId');
+
+        const url = new URL(`${process.env.REACT_APP_API_URL}/admin/products?`);
+        if (search) url.searchParams.append('search', search);
+        if (isActive) url.searchParams.append('isActive', isActive);
+        if (brand) url.searchParams.append('brand', brand);
+        if (categoryId) url.searchParams.append('categoryId', categoryId);
+
+        console.log("Filter: " + url);
+
+        await fetch(url)
+                .then(response => response.json())
+                .then(data => setProducts(data))
+                .catch(error => console.error('Error:', error));
+    }
 
     return (
         <>
@@ -47,31 +78,31 @@ export default function Products() {
 
                         <div className="row mt-4">
                             <div className="col-10">
-                                <form className="d-flex">                       
+                                <form className="d-flex" onSubmit={handleFilter}>                       
                                     <div className="row row-cols-2">
                                         <div className="col">
-                                            <label className="form-label" htmlFor="SearchString">Search</label>
-                                            <input type="text" className="form-control" name="SearchString" id="SearchString" placeholder="search text" />
+                                            <label className="form-label" htmlFor="search">Search</label>
+                                            <input type="text" className="form-control" name="search" id="search" placeholder="search text" />
                                         </div>
                                         <div className="col">
-                                            <label className="form-label" htmlFor="ActiveFilterId">Active</label>
-                                            <select className="form-control" name="ActiveFilterId" id="ActiveFilterId">
+                                            <label className="form-label" htmlFor="isActive">Active</label>
+                                            <select className="form-control" name="isActive" id="isActive">
                                                 <option value="">ALL</option>
-                                                <option value="1">Active</option>
-                                                <option value="0">Inactive</option>
+                                                <option value="true">Active</option>
+                                                <option value="false">Inactive</option>
                                             </select>
                                         </div>
 
                                         <div className="col">
-                                            <label className="form-label" htmlFor="BrandFilterString">Brand</label>
-                                            <select className="form-control" name="BrandFilterString" id="BrandFilterString">
+                                            <label className="form-label" htmlFor="brand">Brand</label>
+                                            <select className="form-control" name="brand" id="brand">
                                                 <option value="">ALL</option>
                                                 {brands?.map((item) => <option key={item} value={item}>{item}</option>)}
                                             </select>
                                         </div>
                                         <div className="col">
-                                            <label className="form-label" htmlFor="CategoryFilterId">Category</label>
-                                            <select className="form-control" name="CategoryFilterId" id="CategoryFilterId">
+                                            <label className="form-label" htmlFor="categoryId">Category</label>
+                                            <select className="form-control" name="categoryId" id="categoryId">
                                                 <option value="">ALL</option>
                                                 {categories?.map((item) => <option key={item.id} value={item.id}>{item.title}</option>)}
                                             </select>

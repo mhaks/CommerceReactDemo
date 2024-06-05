@@ -81,12 +81,9 @@ export default function Orders() {
         const statusId = formData.get("statusId");
 
         const url = new URL(`${process.env.REACT_APP_API_URL}/Admin/Orders`);
-        if (orderId)
-            url.searchParams.append("orderId", orderId);
-        if (customerId)
-            url.searchParams.append("customerId", customerId);
-        if (statusId)
-            url.searchParams.append("statusId", statusId);
+        if (orderId) url.searchParams.append("orderId", orderId);
+        if (customerId) url.searchParams.append("customerId", customerId);
+        if (statusId) url.searchParams.append("statusId", statusId);
 
         console.log("order filter: " + url);
         await fetch(url)
