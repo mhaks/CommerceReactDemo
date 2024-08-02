@@ -9,12 +9,12 @@ export async function loader() {
     let brands = [];
 
     await Promise.all([
-        fetch(`${process.env.REACT_APP_API_URL}/shopping/categories`)
+        fetch(`${process.env.REACT_APP_API_URL}/admin/products/categories`)
             .then(response => response.json())
             .then(data => { categories = data; })
             .catch(error => console.log(error)),
 
-        fetch(`${process.env.REACT_APP_API_URL}/shopping/brands`) 
+        fetch(`${process.env.REACT_APP_API_URL}/admin/products/brands`) 
             .then(response => response.json())
             .then(data => { brands = data; })
             .catch(error => console.log(error))

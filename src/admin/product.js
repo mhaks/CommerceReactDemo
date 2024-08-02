@@ -12,12 +12,12 @@ export async function loader({params}) {
         product = {id: "", title: "", description: "", brand: "", price: "", categoryId: "", model: "", availableQty: "", isActive: true};
         
         await Promise.all([           
-            fetch(`${process.env.REACT_APP_API_URL}/admin/categories`)
+            fetch(`${process.env.REACT_APP_API_URL}/admin/products/categories`)
                 .then(response => response.json())
                 .then(data => { categories = data; })
                 .catch(error => console.log(error)),
 
-            fetch(`${process.env.REACT_APP_API_URL}/admin/brands`) 
+            fetch(`${process.env.REACT_APP_API_URL}/admin/products/brands`) 
                 .then(response => response.json())
                 .then(data => { brands = data; })
                 .catch(error => console.log(error))    
@@ -30,12 +30,12 @@ export async function loader({params}) {
                 .then(data => { product = data; })
                 .catch(error => console.log(error)),
             
-            fetch(`${process.env.REACT_APP_API_URL}/admin/categories`)
+            fetch(`${process.env.REACT_APP_API_URL}/admin/products/categories`)
                 .then(response => response.json())
                 .then(data => { categories = data; })
                 .catch(error => console.log(error)),
 
-            fetch(`${process.env.REACT_APP_API_URL}/admin/brands`) 
+            fetch(`${process.env.REACT_APP_API_URL}/admin/products/brands`) 
                 .then(response => response.json())
                 .then(data => { brands = data; })
                 .catch(error => console.log(error))    
