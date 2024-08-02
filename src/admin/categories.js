@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 export async function loader() {   
     let categories = [];
-    await fetch(`${process.env.REACT_APP_API_URL}/shopping/categories`)
+    await fetch(`${process.env.REACT_APP_API_URL}/admin/products/categories`)
             .then(response => response.json())
             .then(data => { categories = data; })
             .catch(error => console.log(error));

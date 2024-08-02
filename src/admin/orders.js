@@ -8,7 +8,7 @@ import { toLocalDateTime } from "../site";
 export async function loader() {
     let orderStates = [];
     
-    await fetch(`${process.env.REACT_APP_API_URL}/Admin/OrderStates`)
+    await fetch(`${process.env.REACT_APP_API_URL}/Admin/Orders/States`)
             .then(response => response.json())
             .then(data => orderStates = data);
 

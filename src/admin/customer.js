@@ -19,7 +19,7 @@ export async function loader({params}) {
         customer.phoneNumber = "";
         customer.email = "";
         
-        await fetch(`${process.env.REACT_APP_API_URL}/admin/statelocations`)
+        await fetch(`${process.env.REACT_APP_API_URL}/admin/unitedstates`)
                 .then(response => response.json())
                 .then(data => { states = data; })
                 .catch(error => console.log(error));
@@ -27,7 +27,7 @@ export async function loader({params}) {
     else
     {
         await Promise.all([
-            fetch(`${process.env.REACT_APP_API_URL}/admin/statelocations`)
+            fetch(`${process.env.REACT_APP_API_URL}/admin/unitedstates`)
                     .then(response => response.json())
                     .then(data => { states = data; })
                     .catch(error => console.log(error)),
