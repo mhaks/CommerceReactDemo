@@ -10,7 +10,7 @@ import SearchBar from "./searchbar";
 export async function loader({request}){
     const reqUrl = new URL(request.url);
     const searchUrl = `${process.env.REACT_APP_API_URL}/Shopping/Products/Search?${reqUrl.searchParams}`;
-    const categoriesUrl = `${process.env.REACT_APP_API_URL}/Shopping/Categories`;
+    const categoriesUrl = `${process.env.REACT_APP_API_URL}/Shopping/Products/Categories`;
     
     let products = [];
     let categories = [];
