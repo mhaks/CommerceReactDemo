@@ -17,7 +17,24 @@ export async function loader() {
 
 export default function Categories() {
 
-    const categories = useLoaderData();
+    const items = useLoaderData();
+    const [categories, setCategories] = React.useState(items);
+
+
+    async function handleFilter(event) {
+        event.preventDefault();
+        
+        const url = new URL(`${process.env.REACT_APP_API_URL}/admin/products/categories?`);
+
+        const data = new FormData(event.target);
+        const search = data.get('search'.trim());
+        if (search) url.searchParams.append('search', search);
+        
+        await fetch(url)
+            .then(response => response.json())
+            .then(data => { setCategories(data); })
+            .catch(error => console.log(error));
+    }
     
     return (
         <>
@@ -32,10 +49,10 @@ export default function Categories() {
             <section className="py-2">
                 <div className="container px-4 px-lg-5 mt-5">
 
-                    <div className="row mt-4">
+                    <div className="row mt-4">                        
                         <div className="col">
-                            <form className="d-flex">
-                                <input type="text" className="form-control" asp-for="SearchString" placeholder="search category name" />
+                            <form className="d-flex" onSubmit={handleFilter}>
+                                <input type="text" className="form-control" name="search" placeholder="search category name" />
                                 <button type="submit" className="btn btn-outline-dark mt-auto text-center">Search</button>                           
                             </form>
                         </div>
