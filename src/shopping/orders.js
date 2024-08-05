@@ -5,7 +5,7 @@ import { toLocalDateTime } from "../site";
 
 
 export async function loader() {
-    const urlStatuses = `${process.env.REACT_APP_API_URL}/Shopping/OrderStatuses`;
+    const urlStatuses = `${process.env.REACT_APP_API_URL}/Shopping/Orders/States`;
     const urlOrders = `${process.env.REACT_APP_API_URL}/Shopping/Orders`;
     let statuses = [];
     let orders = [];

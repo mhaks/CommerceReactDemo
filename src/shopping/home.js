@@ -9,7 +9,7 @@ import SearchBar from "./searchbar";
 
 
 export async function loader(){
-    const url = `${process.env.REACT_APP_API_URL}/shopping/products/topselling/4`;
+    const url = `${process.env.REACT_APP_API_URL}/shopping/products/sales/4`;
 
     let products = [];
     await fetch(url)

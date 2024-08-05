@@ -14,7 +14,7 @@ export default function SearchBar() {
     ));
 
     useEffect(() => {        
-        fetch(`${process.env.REACT_APP_API_URL}/Shopping/Categories`)
+        fetch(`${process.env.REACT_APP_API_URL}/Shopping/Products/Categories`)
             .then(response => response.json())
             .then(json => setCategories(json))
             .catch(err => { console.error(err)});
