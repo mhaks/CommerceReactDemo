@@ -38,9 +38,9 @@ export async function loader({request}){
 
 export async function action({request, params}) {
     const formData = await request.formData(); 
-    const addCartUrl = `${process.env.REACT_APP_API_URL}/Shopping/Cart/Add`;
+    const addCartUrl = `${process.env.REACT_APP_API_URL}/Shopping/Cart`;
     await fetch(addCartUrl, {
-        method: 'PUT',
+        method: 'POST',
                 body: formData,
     });     
     return redirect('../cart/');

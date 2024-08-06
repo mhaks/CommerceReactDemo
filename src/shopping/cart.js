@@ -19,7 +19,7 @@ export async function loader() {
 
 export async function action({ request }) {
 
-    const cartEditUrl = `${process.env.REACT_APP_API_URL}/Shopping/Cart/Edit/`;
+    const cartEditUrl = `${process.env.REACT_APP_API_URL}/Shopping/Cart/`;
     const formData = await request.formData();
     const action = formData.get("action");
     if (action === 'update') {
