@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState  } from "react";
 import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";
 
@@ -14,7 +14,25 @@ export async function loader() {
 }
 
 export default function Customers() {
-    const customers = useLoaderData();
+    const [customers, setCustomers] = useState(useLoaderData());
+
+
+    async function handleFilter(event) {
+        event.preventDefault();
+        
+        const formData = new FormData(event.target);
+        const search = formData.get('search');
+
+        const url = new URL(`${process.env.REACT_APP_API_URL}/admin/customers?`);
+        if (search) url.searchParams.append('search', search);
+
+        await fetch(url)
+                .then(response => response.json())
+                .then(data => setCustomers(data))
+                .catch(error => console.error('Error:', error));
+
+    }
+
     return (
         <>
             <section className="bg-dark py-1">
@@ -29,8 +47,8 @@ export default function Customers() {
                 <div className="container px-4 px-lg-5 mt-5">
                     <div className="row mt-4">
                         <div className="col">
-                            <form className="d-flex">
-                                <input type="text" className="form-control" asp-for="SearchString" placeholder="search customer name" />
+                            <form className="d-flex" onSubmit={handleFilter}>
+                                <input type="text" className="form-control" name="search" placeholder="search customer name" />
                                 <button type="submit" className="btn btn-outline-dark mt-auto text-center">Search</button>                           
                             </form>
                         </div>
