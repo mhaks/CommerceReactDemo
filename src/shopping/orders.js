@@ -53,19 +53,19 @@ export default function Orders() {
         const zeroPadding = Math.max(8 - order.id.toString().length, 0);
         const orderId = '0'.repeat(zeroPadding) + order.id.toString();
 
-        const ordered = order.orderHistory.find(h => h.orderStatusId === 2);
+        const ordered = order.history.find(h => h.statusId === 2);
         const orderDateTime = ordered != null ? toLocalDateTime(ordered.orderDate) : "";
 
-        const current = order.orderHistory[order.orderHistory.length - 1];
+        const current = order.history[order.history.length - 1];
         const lastDateTime = current != null ? toLocalDateTime(current.orderDate) : "";
 
         ordersTemplate.push(
             <tr key={order.id}>
                 <td><Link to={'../order/' + order.id} >{orderId}</Link></td>
                 <td>{orderDateTime}</td>
-                <td>{current.orderStatus.name}</td>
+                <td>{current.status}</td>
                 <td>{lastDateTime}</td>
-                <td>{order.orderProducts.length}</td>
+                <td>{order.products.length}</td>
                 <td>${Number(order.totalPrice).toFixed(2)}</td>                                
             </tr>
         );

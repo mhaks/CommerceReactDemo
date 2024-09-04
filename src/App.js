@@ -36,7 +36,7 @@ export async function loader() {
 
 
 
-  await fetch(process.env.REACT_APP_API_URL + '/Shopping/Cart/Count')
+  await fetch(`${process.env.REACT_APP_API_URL}/Shopping/Cart/Products`)
       .then(resp => resp.json())
       .then(data => { cartItemCount = data;});
 

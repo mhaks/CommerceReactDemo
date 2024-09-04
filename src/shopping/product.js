@@ -17,9 +17,9 @@ export async function loader({params}) {
 
 export async function action({request, params}) {
     const formData = await request.formData(); 
-    const addCartUrl = `${process.env.REACT_APP_API_URL}/Shopping/Cart`;
+    const addCartUrl = `${process.env.REACT_APP_API_URL}/Shopping/Cart/Products`;
     await fetch(addCartUrl, {
-        method: 'POST',
+        method: 'PUT',
                 body: formData,
     });     
     return redirect('../cart/');
@@ -56,7 +56,7 @@ export default function Product() {
                                     <span>${product.price}</span>
                                 </div>                
                                 <div className="d-flex">
-                                    <Form method="post" >
+                                    <Form method="put" >
                                         <input type='hidden' name='productId' value={product.id}/>
                                         <input className="form-control text-center me-3" name="quantity" type="number" defaultValue="1" min="1" style={{maxWidth: 3 + "rem"}} />
                                         <button className="btn btn-outline-dark flex-shrink-0" type="submit">

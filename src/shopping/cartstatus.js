@@ -8,10 +8,10 @@ export default function CartStatus() {
     const [count, setCount] = useState(0);
 
     useEffect(() => {
-        const url = `${process.env.REACT_APP_API_URL}/Shopping/Cart/Count`;
+        const url = `${process.env.REACT_APP_API_URL}/Shopping/Cart/Products`;
         fetch(url)
         .then(resp => resp.json())
-        .then(data => { setCount(data)})
+        .then(data => { setCount(data.length)})
         .catch(err => { console.error(err)});
 
     });

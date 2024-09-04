@@ -8,88 +8,86 @@ import { Link, Form, } from "react-router-dom";
 
 export async function loader() {
     const cartUrl = `${process.env.REACT_APP_API_URL}/Shopping/Cart/`;
-    let order = null;
+    let cart = null;
     await fetch(cartUrl)
         .then (response => response.json())
-        .then (json => {order = json;})
+        .then (json => {cart = json;})
         .catch(err => console.error(err));
 
-    return order;
+    return cart;
 }
 
 export async function action({ request }) {
 
-    const cartEditUrl = `${process.env.REACT_APP_API_URL}/Shopping/Cart/`;
     const formData = await request.formData();
     const action = formData.get("action");
+    const productId = formData.get("productId");
+
     if (action === 'update') {
-        const errors = {};
-        const orderProductId = formData.get("orderProductId");
+        const errors = {};        
         const quantity = formData.get("quantity");
         if(!quantity) {
             errors.quantity = 'Quantity is required';
-            errors.orderProductId = orderProductId;
+            errors.productId = productId;
             return errors;
         }
+
+        await fetch(`${process.env.REACT_APP_API_URL}/Shopping/Cart/Products/`, {
+            method: "PUT",
+            body: formData,
+        })    
+        .catch(err => console.error(err));
+    }
+    else if (action === 'remove') {
+        await fetch(`${process.env.REACT_APP_API_URL}/Shopping/Cart/Products/${productId}`, {
+            method: "DELETE",           
+        })    
+        .catch(err => console.error(err));
     }
     
-    await fetch(cartEditUrl, {
-        method: "PUT",
-        body: formData,
-    })    
-    .catch(err => console.error(err));
-
     return redirect("/cart/");
 }
 
 export default function Cart() {
 
-    const order = useLoaderData();
+    const cart = useLoaderData();
     const errors = useActionData();
 
-    const itemCount = order.orderProducts?.length;
-    const subTotal = order.orderProducts?.reduce((accum, current) => accum + (current.quantity * current.product.price), 0);
+    const itemCount = cart.products?.length;
+    const subTotal = cart.products?.reduce((accum, current) => accum + (current.quantity * current.price), 0);
 
-    const productsTemplate = order.orderProducts?.map((item, index) => (
-                  
-        <tr key={item.id}>
-            
-            <td><img className="" src="https://dummyimage.com/150x100/dee2e6/6c757d.jpg" alt={item.product.title} /></td>
+    const productsTemplate = cart.products?.map((item, index) => (                  
+        <tr key={item.id}>            
+            <td><img className="" src="https://dummyimage.com/150x100/dee2e6/6c757d.jpg" alt={item.title} /></td>
             <td>
-                <Link to={'../product/' + item.product.id} target="_blank">
-                    <h5 className="fw-bolder">{item.product.title}</h5>
+                <Link to={'../product/' + item.id} target="_blank">
+                    <h5 className="fw-bolder">{item.title}</h5>
                 </Link>
                 
-                <p className="fw-bolder">{item.product.brand}</p>                                       
+                <p className="fw-bolder">{item.brand}</p>                                       
                 <Form method="put">
-                    <div className="row">                        
-                        <input type="hidden" name="orderId" value={item.orderId}/>
-                        <input type="hidden" name="orderProductId" value={item.id}/>
+                    <div className="row">
+                        <input type="hidden" name="productId" value={item.id}/>
                         <div className="col-3">
                             <div className="input-group my-3">
                                 <span className="input-group-text" id="basic-addon1" >Qty</span>
-                                <input type="number" className="form-control" aria-label="Quantity" aria-describedby="basic-addon1" defaultValue={item.quantity} name="quantity" min="0" max="50"/>                                
-                            </div>
-                            
+                                <input type="number" className="form-control" aria-label="Quantity" aria-describedby="basic-addon1" defaultValue={item.quantity} name="quantity" min="1" max="50"/>                                
+                            </div>                            
                         </div>
                         <div className="col-3 my-3">
                             <button type="submit" className="btn btn-outline-dark mt-auto" name="action" value="update">Update</button>
                             {errors?.quantity && <p className="text-danger text-sm-start">{errors.quantity}</p>}
-                        </div> 
-
-                                           
+                        </div>                                           
                     </div>
                 </Form>
             </td>
 
             <td className="align-middle text-end">                                        
-                <div className="fw-bolder">${item.product.price.toFixed(2)}</div>
+                <div className="fw-bolder">${item.price.toFixed(2)}</div>
             </td>
             <td className="align-middle">
-                <Form method="put">
-                    <input type="hidden" name="orderId" value={item.orderId}/>
-                    <input type="hidden" name="orderProductId" value={item.id}/>
-                    <input type="hidden" name="quantity" value="0"/>
+                <Form method="delete">                    
+                    <input type="hidden" name="productId" value={item.id}/>                    
                     <button type="submit" className="btn btn-outline-danger mt-auto" name="action" value="remove">Remove</button>
                 </Form>
             </td>
@@ -110,7 +108,7 @@ export default function Cart() {
             </section>
             
 
-            { order && order.orderProducts.length > 0 ? (
+            { cart && cart.products.length > 0 ? (
                 <>
                     <section className="py-2">
                         <div className="container px-4 px-lg-5 mt-5">
