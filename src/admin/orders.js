@@ -77,12 +77,12 @@ export default function Orders() {
     {
         const formData = new FormData(formFilter);        
         const orderId = formData.get("orderId");
-        const customerId = formData.get("customerId");
+        const userName = formData.get("userName");
         const statusId = formData.get("statusId");
 
         const url = new URL(`${process.env.REACT_APP_API_URL}/Admin/Orders`);
         if (orderId) url.searchParams.append("orderId", orderId);
-        if (customerId) url.searchParams.append("customerId", customerId);
+        if (userName) url.searchParams.append("userName", userName);
         if (statusId) url.searchParams.append("statusId", statusId);
 
         console.log("order filter: " + url);
@@ -128,7 +128,7 @@ export default function Orders() {
                         </div>
 
                         <div className="col mx-1">
-                            <input type="text" className="form-control" name="customerId" placeholder="customer id" />
+                            <input type="text" className="form-control" name="userName" placeholder="customer" />
                         </div>
 
                         <div className="col mx-1">
@@ -149,7 +149,7 @@ export default function Orders() {
                         <thead>
                             <tr>
                                 <th>Order #</th>
-                                <th>Customer #</th>
+                                <th>Customer</th>
                                 <th>Ordered</th>
                                 <th>Status</th>
                                 <th>Updated</th>
