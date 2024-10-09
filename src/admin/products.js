@@ -26,6 +26,7 @@ export async function loader() {
 export default function Products() {
     const {categories, brands} = useLoaderData();
     const [products, setProducts] = useState([]);
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
     useEffect(() => {
         async function fetchProducts() {
@@ -61,6 +62,47 @@ export default function Products() {
                 .then(data => setProducts(data))
                 .catch(error => console.error('Error:', error));
     }
+
+    const sortProducts = (key) => {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+
+        const sortedProducts = [...products].sort((a, b) => {
+            const aValue = a[key];
+            const bValue = b[key];
+            
+            if (typeof aValue === 'string' && typeof bValue === 'string') {
+                const aLower = aValue.toLowerCase();
+                const bLower = bValue.toLowerCase();
+    
+                if (aLower < bLower) {
+                    return direction === 'ascending' ? -1 : 1;
+                }
+                if (aLower > bLower) {
+                    return direction === 'ascending' ? 1 : -1;
+                }
+                return 0;
+            } else if (typeof aValue === 'number' && typeof bValue === 'number') {
+                return direction === 'ascending' ? aValue - bValue : bValue - aValue;
+            } else {
+                const aStr = aValue.toString().toLowerCase();
+                const bStr = bValue.toString().toLowerCase();
+
+                if (aStr < bStr) {
+                    return direction === 'ascending' ? -1 : 1;
+                }
+                if (aStr > bStr) {
+                    return direction === 'ascending' ? 1 : -1;
+                }
+                return 0;
+            }
+        });
+
+        setProducts(sortedProducts);
+        setSortConfig({ key, direction });
+    };
 
     return (
         <>
@@ -125,37 +167,37 @@ export default function Products() {
                             <thead>
                                 <tr>
                                     <th>
-                                        <Link>
+                                        <button  className="link-button" onClick={() => sortProducts('title')}>
                                             Title
-                                        </Link>                
+                                        </button>                
                                     </th>
                                     <th>
-                                        <Link>
+                                        <button  className="link-button" onClick={() => sortProducts('brand')}>
                                             Brand
-                                        </Link>
+                                        </button>
                                     </th>
                                     <th>
-                                        <Link>
-                                            Model Number
-                                        </Link>
+                                        <button  className="link-button" onClick={() => sortProducts('model')}>
+                                            Model
+                                        </button>
                                     </th>
                                     <th>
-                                        <Link>
+                                        <button  className="link-button" onClick={() => sortProducts('category')}>
                                             Category
-                                        </Link>
+                                        </button>
                                     </th>
-                                    <th>
-                                        <Link>
+                                    <th className="text-end" onClick={() => sortProducts('price')}>
+                                        <button  className="link-button">
                                             Price
-                                        </Link>
+                                        </button>
                                     </th>
-                                    <th>
-                                        <Link>
+                                    <th className="text-end" onClick={() => sortProducts('availableQty')}>
+                                        <button  className="link-button">
                                             Available
-                                        </Link>
+                                        </button>
                                     </th>
-                                    <th>             
-                                            Active                
+                                    <th className="text-center">             
+                                        Active                
                                     </th>
                                     <th style={{textAlign: "right"}}>
                                         Results: {products?.length}
@@ -185,7 +227,7 @@ export default function Products() {
                                                 {item.availableQty}
                                             </td>
                                             <td className="text-center">
-                                                {item.isActive}
+                                                <input type="checkbox" checked={item.isActive} disabled></input>
                                             </td>           
                                             <td className="text-end">
                                                 <Link to={"../admin/product/" + item.id} className="btn btn-outline-dark mt-auto text-center">Edit</Link>
