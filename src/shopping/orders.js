@@ -36,7 +36,7 @@ export default function Orders() {
 
     useEffect(() => {
         if(selectedStatus) {
-            setDisplayOrders(orders.filter(o => o.orderHistory[o.orderHistory.length - 1].orderStatusId === Number(selectedStatus)));
+            setDisplayOrders(orders.filter(o => o.history[o.history.length - 1].statusId === Number(selectedStatus)));
         } else {    
             setDisplayOrders(orders);
         }
