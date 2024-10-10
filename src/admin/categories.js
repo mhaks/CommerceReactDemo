@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";    
 
@@ -18,7 +18,8 @@ export async function loader() {
 export default function Categories() {
 
     const items = useLoaderData();
-    const [categories, setCategories] = React.useState(items);
+    const [categories, setCategories] = useState(items);
+    const[sortConfig, setSortConfig] = useState({key: null, direction: 'ascending'});
 
 
     async function handleFilter(event) {
@@ -34,6 +35,26 @@ export default function Categories() {
             .then(response => response.json())
             .then(data => { setCategories(data); })
             .catch(error => console.log(error));
+    }
+
+    async function sortCategories(key) {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        const sortedCategories = [...categories].sort((a, b) => {
+            const aValue = a[key].toLowerCase();
+            const bValue = b[key].toLowerCase();
+            if (direction === 'ascending') {
+                return aValue > bValue ? 1 : -1;
+            } else {
+                return aValue < bValue ? 1 : -1;
+            }   
+
+        });
+
+        setCategories(sortedCategories);
+        setSortConfig({ key, direction });
     }
     
     return (
@@ -66,8 +87,8 @@ export default function Categories() {
                         <table className="table">
                             <thead>
                                 <tr>
-                                    <th>
-                                        <Link>Name</Link>                                        
+                                    <th >
+                                        <button  className="link-button" onClick={() => sortCategories('title')}>Name</button>                                
                                     </th>
                                     <th>
                                         Category ID
