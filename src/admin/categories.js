@@ -37,7 +37,7 @@ export default function Categories() {
             .catch(error => console.log(error));
     }
 
-    async function sortCategories(key) {
+    function sortCategories(key) {
         let direction = 'ascending';
         if (sortConfig.key === key && sortConfig.direction === 'ascending') {
             direction = 'descending';

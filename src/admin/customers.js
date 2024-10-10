@@ -15,6 +15,7 @@ export async function loader() {
 
 export default function Customers() {
     const [customers, setCustomers] = useState(useLoaderData());
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
 
     async function handleFilter(event) {
@@ -31,6 +32,25 @@ export default function Customers() {
                 .then(data => setCustomers(data))
                 .catch(error => console.error('Error:', error));
 
+    }
+
+    function sortCustomers(key) {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        const sortedCustomers = [...customers].sort((a, b) => {
+            const aValue = a[key].toLowerCase();
+            const bValue = b[key].toLowerCase();
+            if (direction === 'ascending') {
+                return aValue > bValue ? 1 : -1;
+            } else {
+                return aValue < bValue ? 1 : -1;
+            }
+        });
+
+        setCustomers(sortedCustomers);
+        setSortConfig({ key, direction});
     }
 
     return (
@@ -62,7 +82,7 @@ export default function Customers() {
                         <thead>
                             <tr>            
                                 <th>
-                                    <Link>Name</Link>
+                                    <button className="link-button" onClick={() => sortCustomers('fullName')}>Name</button>
                                 </th>
                                 <th>
                                     Address1
