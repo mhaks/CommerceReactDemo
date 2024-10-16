@@ -5,8 +5,8 @@ import { toLocalDateTime } from "../site";
 
 
 export async function loader() {
-    const urlStatuses = `${process.env.REACT_APP_API_URL}/Shopping/Orders/States`;
-    const urlOrders = `${process.env.REACT_APP_API_URL}/Shopping/Orders`;
+    const urlStatuses = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Orders/States`;
+    const urlOrders = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Orders`;
     let statuses = [];
     let orders = [];
     await Promise.all([

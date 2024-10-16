@@ -14,7 +14,7 @@ export default function Footer() {
                         <UserSwitch />
                     </div>
                 </div>
-                <p className="text-center text-white ">Copyright &copy; Mhaks 2023</p>
+                <p className="text-center text-white ">Copyright &copy; Mhaks 2024</p>
             </div>
         </footer>
     );

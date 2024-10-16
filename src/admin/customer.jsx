@@ -19,7 +19,7 @@ export async function loader({params}) {
         customer.phoneNumber = "";
         customer.email = "";
         
-        await fetch(`${process.env.REACT_APP_API_URL}/admin/unitedstates`)
+        await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/unitedstates`)
                 .then(response => response.json())
                 .then(data => { states = data; })
                 .catch(error => console.log(error));
@@ -27,12 +27,12 @@ export async function loader({params}) {
     else
     {
         await Promise.all([
-            fetch(`${process.env.REACT_APP_API_URL}/admin/unitedstates`)
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/unitedstates`)
                     .then(response => response.json())
                     .then(data => { states = data; })
                     .catch(error => console.log(error)),
     
-            fetch(`${process.env.REACT_APP_API_URL}/admin/customers/${params.id}`)
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/customers/${params.id}`)
                     .then(response => response.json())
                     .then(data => { customer = data; })
                     .catch(error => console.log(error)),
@@ -53,7 +53,7 @@ export async function action({request}) {
     }
 
     // put
-    await fetch(`${process.env.REACT_APP_API_URL}/admin/customers/`, {
+    await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/customers/`, {
         method: 'PUT',
         body: formData
     })

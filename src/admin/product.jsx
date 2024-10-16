@@ -12,12 +12,12 @@ export async function loader({params}) {
         product = {id: "", title: "", description: "", brand: "", price: "", categoryId: "", model: "", availableQty: "", isActive: true};
         
         await Promise.all([           
-            fetch(`${process.env.REACT_APP_API_URL}/admin/products/categories`)
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/categories`)
                 .then(response => response.json())
                 .then(data => { categories = data; })
                 .catch(error => console.log(error)),
 
-            fetch(`${process.env.REACT_APP_API_URL}/admin/products/brands`) 
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/brands`) 
                 .then(response => response.json())
                 .then(data => { brands = data; })
                 .catch(error => console.log(error))    
@@ -25,17 +25,17 @@ export async function loader({params}) {
     }
     else {
         await Promise.all([
-            fetch(`${process.env.REACT_APP_API_URL}/admin/products/${params.id}`)
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/${params.id}`)
                 .then(response => response.json())
                 .then(data => { product = data; })
                 .catch(error => console.log(error)),
             
-            fetch(`${process.env.REACT_APP_API_URL}/admin/products/categories`)
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/categories`)
                 .then(response => response.json())
                 .then(data => { categories = data; })
                 .catch(error => console.log(error)),
 
-            fetch(`${process.env.REACT_APP_API_URL}/admin/products/brands`) 
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/brands`) 
                 .then(response => response.json())
                 .then(data => { brands = data; })
                 .catch(error => console.log(error))    
@@ -60,7 +60,7 @@ export async function action({request})
 
 
     // put
-    await fetch(`${process.env.REACT_APP_API_URL}/admin/products/`, {
+    await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/`, {
         method: 'PUT',
         body: formData
     })

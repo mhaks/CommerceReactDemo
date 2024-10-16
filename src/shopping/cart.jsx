@@ -7,7 +7,7 @@ import { Link, Form, } from "react-router-dom";
 
 
 export async function loader() {
-    const cartUrl = `${process.env.REACT_APP_API_URL}/Shopping/Cart/`;
+    const cartUrl = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart/`;
     let cart = null;
     await fetch(cartUrl)
         .then (response => response.json())
@@ -32,14 +32,14 @@ export async function action({ request }) {
             return errors;
         }
 
-        await fetch(`${process.env.REACT_APP_API_URL}/Shopping/Cart/Products/`, {
+        await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart/Products/`, {
             method: "PUT",
             body: formData,
         })    
         .catch(err => console.error(err));
     }
     else if (action === 'remove') {
-        await fetch(`${process.env.REACT_APP_API_URL}/Shopping/Cart/Products/${productId}`, {
+        await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart/Products/${productId}`, {
             method: "DELETE",           
         })    
         .catch(err => console.error(err));

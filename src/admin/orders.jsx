@@ -8,7 +8,7 @@ import { toLocalDateTime } from "../site";
 export async function loader() {
     let orderStates = [];
     
-    await fetch(`${process.env.REACT_APP_API_URL}/Admin/Orders/States`)
+    await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/Admin/Orders/States`)
             .then(response => response.json())
             .then(data => orderStates = data);
 
@@ -22,7 +22,7 @@ export default function Orders() {
 
     useEffect(() => { 
         const fetchOrders = async () => {
-            fetch(`${process.env.REACT_APP_API_URL}/Admin/Orders`)
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/Admin/Orders`)
                 .then(response => response.json())
                 .then(data => setOrders(data))
                 .catch(error => console.error('Error:', error));
@@ -80,7 +80,7 @@ export default function Orders() {
         const userName = formData.get("userName");
         const statusId = formData.get("statusId");
 
-        const url = new URL(`${process.env.REACT_APP_API_URL}/Admin/Orders`);
+        const url = new URL(`${import.meta.env.VITE_REACT_APP_API_URL}/Admin/Orders`);
         if (orderId) url.searchParams.append("orderId", orderId);
         if (userName) url.searchParams.append("userName", userName);
         if (statusId) url.searchParams.append("statusId", statusId);
@@ -98,7 +98,7 @@ export default function Orders() {
         const orderId = formData.get("orderId");
         const stateId = formData.get("stateId");
     
-        await fetch(`${process.env.REACT_APP_API_URL}/Admin/Orders/${orderId}/State/${stateId}`, {
+        await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/Admin/Orders/${orderId}/State/${stateId}`, {
             method: 'PUT',
             body: formData
         }).catch(error => console.error('Error:', error));  

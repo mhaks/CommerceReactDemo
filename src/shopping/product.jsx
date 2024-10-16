@@ -4,7 +4,7 @@ import { Form, } from "react-router-dom";
 
 
 export async function loader({params}) {
-    const url = `${process.env.REACT_APP_API_URL}/Shopping/Products/${params.id}`;
+    const url = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Products/${params.id}`;
     let product = null;
     await fetch(url)
         .then(response => response.json())
@@ -17,7 +17,7 @@ export async function loader({params}) {
 
 export async function action({request, params}) {
     const formData = await request.formData(); 
-    const addCartUrl = `${process.env.REACT_APP_API_URL}/Shopping/Cart/Products`;
+    const addCartUrl = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart/Products`;
     await fetch(addCartUrl, {
         method: 'PUT',
                 body: formData,

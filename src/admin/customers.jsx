@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export async function loader() {
     let customers = [];
-    await fetch(`${process.env.REACT_APP_API_URL}/admin/customers`)
+    await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/customers`)
             .then(response => response.json())
             .then(data => { customers = data; })
             .catch(error => console.log(error));
@@ -24,7 +24,7 @@ export default function Customers() {
         const formData = new FormData(event.target);
         const search = formData.get('search');
 
-        const url = new URL(`${process.env.REACT_APP_API_URL}/admin/customers?`);
+        const url = new URL(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/customers?`);
         if (search) url.searchParams.append('search', search);
 
         await fetch(url)

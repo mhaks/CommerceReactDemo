@@ -9,12 +9,12 @@ export async function loader() {
     let brands = [];
 
     await Promise.all([
-        fetch(`${process.env.REACT_APP_API_URL}/admin/products/categories`)
+        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/categories`)
             .then(response => response.json())
             .then(data => { categories = data; })
             .catch(error => console.log(error)),
 
-        fetch(`${process.env.REACT_APP_API_URL}/admin/products/brands`) 
+        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/brands`) 
             .then(response => response.json())
             .then(data => { brands = data; })
             .catch(error => console.log(error))
@@ -30,7 +30,7 @@ export default function Products() {
 
     useEffect(() => {
         async function fetchProducts() {
-            await fetch(`${process.env.REACT_APP_API_URL}/admin/products`)
+            await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products`)
                 .then(response => response.json())
                 .then(data => setProducts(data))
                 .catch(error => console.error('Error:', error));
@@ -49,7 +49,7 @@ export default function Products() {
         const brand = formData.get('brand');
         const categoryId = formData.get('categoryId');
 
-        const url = new URL(`${process.env.REACT_APP_API_URL}/admin/products?`);
+        const url = new URL(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products?`);
         if (search) url.searchParams.append('search', search);
         if (isActive) url.searchParams.append('isActive', isActive);
         if (brand) url.searchParams.append('brand', brand);

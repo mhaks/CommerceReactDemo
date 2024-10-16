@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AdminContext } from './contexts'; 
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
 
 export default function UserSwitch() {

@@ -9,8 +9,8 @@ import SearchBar from "./searchbar";
 
 export async function loader({request}){
     const reqUrl = new URL(request.url);
-    const searchUrl = `${process.env.REACT_APP_API_URL}/Shopping/Products/Search?${reqUrl.searchParams}`;
-    const categoriesUrl = `${process.env.REACT_APP_API_URL}/Shopping/Products/Categories`;
+    const searchUrl = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Products/Search?${reqUrl.searchParams}`;
+    const categoriesUrl = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Products/Categories`;
     
     let products = [];
     let categories = [];
@@ -38,7 +38,7 @@ export async function loader({request}){
 
 export async function action({request, params}) {
     const formData = await request.formData(); 
-    const addCartUrl = `${process.env.REACT_APP_API_URL}/Shopping/Cart`;
+    const addCartUrl = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart`;
     await fetch(addCartUrl, {
         method: 'POST',
                 body: formData,

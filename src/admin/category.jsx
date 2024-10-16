@@ -11,7 +11,7 @@ export async function loader({params}) {
 
     let category = {};
 
-    await fetch(`${process.env.REACT_APP_API_URL}/admin/products/categories/${params.id}`)
+    await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/categories/${params.id}`)
         .then(response => response.json())
         .then(data => { category = data; })
         .catch(error => console.log(error));
@@ -35,7 +35,7 @@ export async function action({request}) {
         return errors;
     }
 
-    await fetch(`${process.env.REACT_APP_API_URL}/admin/products/categories/`, {
+    await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/categories/`, {
         method: 'PUT',
         body: formData
     })

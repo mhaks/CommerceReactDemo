@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 export async function loader() {   
     let categories = [];
-    await fetch(`${process.env.REACT_APP_API_URL}/admin/products/categories`)
+    await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/categories`)
             .then(response => response.json())
             .then(data => { categories = data; })
             .catch(error => console.log(error));
@@ -25,7 +25,7 @@ export default function Categories() {
     async function handleFilter(event) {
         event.preventDefault();
         
-        const url = new URL(`${process.env.REACT_APP_API_URL}/admin/products/categories?`);
+        const url = new URL(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/categories?`);
 
         const data = new FormData(event.target);
         const search = data.get('search'.trim());
