@@ -50,7 +50,7 @@ export default function Orders() {
 
         ordersTemplate.push(
             <tr key={order.orderId}>
-                <td><Link to={'../admin/order/' + order.orderId} >{orderId}</Link></td>
+                <td><Link to={'../admin/order/' + order.orderId} target="_blank" rel="noreferrer noopener">{orderId}</Link></td>
                 <td>{order.userName}</td>
                 <td>{orderDateTime}</td>
                 <td>{order.statusName}</td>

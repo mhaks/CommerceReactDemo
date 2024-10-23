@@ -36,7 +36,7 @@ export default function Order() {
         <tr key={item.id}>
             <td><img className="" src="https://dummyimage.com/90x60/dee2e6/6c757d.jpg" alt="{item.product.title}" /></td>
             <td>
-            <Link to={'../product/' + item.product.id} target="_blank">
+            <Link to={'../product/' + item.product.id} target="_blank" rel="noreferrer noopener">
                         <h5 className="fw-bolder">{item.product.title}</h5>
                </Link>
                 <p className="fw-bolder">{item.product.brand}</p>
