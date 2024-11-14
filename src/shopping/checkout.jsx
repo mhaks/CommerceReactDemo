@@ -77,7 +77,10 @@ export default function Checkout() {
     const order = useLoaderData();
     const errors = useActionData();
 
-    const itemCount = order.orderProducts?.length;
+    const itemCount = order.products?.length;
+    const subtotal = order.products?.reduce((total, item) => total + item.price, 0);
+    const tax = subtotal * 0.06;
+    const totalPrice = subtotal + tax;
  
 
     const expirationTemplate = [];
@@ -95,14 +98,14 @@ export default function Checkout() {
     }
 
 
-    const productsTemplate = order.orderProducts?.map((item, index) => (
+    const productsTemplate = order.products?.map((item, index) => (
         <tr key={item.id}>
             <td><img className="" src="https://dummyimage.com/90x60/dee2e6/6c757d.jpg" alt="{item.product.title}" /></td>
             <td>
-            <Link to={'../product/' + item.product.id} target="_blank">
-                        <h5 className="fw-bolder">{item.product.title}</h5>
+            <Link to={'../product/' + item.id} target="_blank">
+                        <h5 className="fw-bolder">{item.title}</h5>
                </Link>
-                <p className="fw-bolder">{item.product.brand}</p>
+                <p className="fw-bolder">{item.brand}</p>
             </td>
 
             <td className="align-middle text-end">
@@ -140,11 +143,11 @@ export default function Checkout() {
                             <hr className="col-12" />
                             <h5 className="col-3">Shipping Address</h5>
                             <div className="col-9">
-                                <div>{order.user.fullName}</div>
-                                <div>{order.user.address1}</div>
-                                {order.user.address2 && <div>{order.user.address2}</div>}
+                                <div>{order.customer.firstName}&nbsp;{order.customer.lastName}</div>
+                                <div>{order.customer.address1}</div>
+                                {order.customer.address2 && <div>{order.customer.address2}</div>}
                                 
-                                <div>{order.user.city}, {order.user.stateLocation.abbreviation} {order.user.postalCode}</div>
+                                <div>{order.customer.city}, {order.customer.state} {order.customer.postalCode}</div>
                                 <div>{order.email}</div>
                                 <div>{order.phoneNumber}</div>
                             </div>
@@ -224,15 +227,15 @@ export default function Checkout() {
                             </div>
                             <div className="col-10">
                                 <div className="row">
-                                    <h4 className="text-danger col-8">Order Total ${order.totalPrice.toFixed(2)}</h4>
+                                    <h4 className="text-danger col-8">Order Total ${totalPrice.toFixed(2)}</h4>
                                     <div className="col-4">
                                         <div className="row row-cols-2">
                                             <div className="col text-end">Items: {itemCount}</div>
-                                            <div className="col text-end">${order.subtotal.toFixed(2)}</div>
+                                            <div className="col text-end">${subtotal.toFixed(2)}</div>
                                             <div className="col text-end underline">Tax</div>
-                                            <div className="col text-end underline">${order.tax.toFixed(2)}</div>
+                                            <div className="col text-end underline">${tax.toFixed(2)}</div>
                                             <div className="col text-end">Order Total</div>
-                                            <div className="col text-end">${order.totalPrice.toFixed(2)}</div>
+                                            <div className="col text-end">${totalPrice.toFixed(2)}</div>
                                         </div>
                                     </div>
                                 </div>

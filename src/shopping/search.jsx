@@ -38,9 +38,9 @@ export async function loader({request}){
 
 export async function action({request, params}) {
     const formData = await request.formData(); 
-    const addCartUrl = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart`;
+    const addCartUrl = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart/Products`;
     await fetch(addCartUrl, {
-        method: 'POST',
+        method: 'PUT',
                 body: formData,
     });     
     return redirect('../cart/');
