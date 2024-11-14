@@ -1,13 +1,15 @@
-import React from "react";
+import {useContext} from "react";
 
 import { useLoaderData, useActionData, redirect } from "react-router";
 import { Link, Form, } from "react-router-dom";
+import { UserContext } from './../contexts'; 
 
 
 
 
-export async function loader() {
-    const cartUrl = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart/`;
+export async function loader({ request }) {
+    console.log(request);
+    const cartUrl = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart`;
     let cart = null;
     await fetch(cartUrl)
         .then (response => response.json())
@@ -18,7 +20,7 @@ export async function loader() {
 }
 
 export async function action({ request }) {
-
+ 
     const formData = await request.formData();
     const action = formData.get("action");
     const productId = formData.get("productId");
@@ -49,7 +51,7 @@ export async function action({ request }) {
 }
 
 export default function Cart() {
-
+    
     const cart = useLoaderData();
     const errors = useActionData();
 
@@ -65,7 +67,7 @@ export default function Cart() {
                 </Link>
                 
                 <p className="fw-bolder">{item.brand}</p>                                       
-                <Form method="put">
+                <Form method="put">                   
                     <div className="row">
                         <input type="hidden" name="productId" value={item.id}/>
                         <div className="col-3">
@@ -86,7 +88,7 @@ export default function Cart() {
                 <div className="fw-bolder">${item.price.toFixed(2)}</div>
             </td>
             <td className="align-middle">
-                <Form method="delete">                    
+                <Form method="delete">                              
                     <input type="hidden" name="productId" value={item.id}/>                    
                     <button type="submit" className="btn btn-outline-danger mt-auto" name="action" value="remove">Remove</button>
                 </Form>
