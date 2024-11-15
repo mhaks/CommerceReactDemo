@@ -60,7 +60,7 @@ export default function Cart() {
 
     const productsTemplate = cart.products?.map((item, index) => (                  
         <tr key={item.id}>            
-            <td><img className="" src="https://dummyimage.com/150x100/dee2e6/6c757d.jpg" alt={item.title} /></td>
+            <td><img className="" src="/product_150x100.jpg" alt={item.title} /></td>
             <td>
                 <Link to={'../product/' + item.id} target="_blank">
                     <h5 className="fw-bolder">{item.title}</h5>
