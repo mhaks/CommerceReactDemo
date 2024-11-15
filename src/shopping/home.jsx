@@ -8,6 +8,7 @@ import SearchBar from "./searchbar";
 
 
 
+
 export async function loader(){
     const url = `${import.meta.env.VITE_REACT_APP_API_URL}/shopping/products/sales/4`;
 
@@ -30,7 +31,7 @@ export default function Home() {
             <div className="card h-100">
                 <div className="badge bg-dark text-white position-absolute"  style={{top: 0.5 + "rem", right: 0.5 + "rem"}}>Top Seller</div>
                 
-                <img className="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                <img className="card-img-top" src="/product_450x300.jpg" alt={item.title} />
                 
                 <div className="card-body p-4">
                     <div className="text-center">

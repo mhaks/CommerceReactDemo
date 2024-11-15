@@ -57,7 +57,7 @@ export default function Search() {
 
     const resultsTemplate = products.map((product, index) => (
         <tr key={product.id}>
-            <td><img className="" src="https://dummyimage.com/225x150/dee2e6/6c757d.jpg" alt={product.title} /></td>
+            <td><img className="" src="/product_225x150.jpg" alt={product.title} /></td>
             <td>
                 <Link to={'../product/' + product.id}>
                     <h5 className="fw-bolder">{product.title}</h5>

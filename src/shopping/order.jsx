@@ -34,7 +34,7 @@ export default function Order() {
 
     const productsTemplate = order.orderProducts?.map((item, index) => (
         <tr key={item.id}>
-            <td><img className="" src="https://dummyimage.com/90x60/dee2e6/6c757d.jpg" alt="{item.product.title}" /></td>
+            <td><img className="" src="/product_90x60.jpg" alt="{item.product.title}" /></td>
             <td>
             <a href={'../product/' + item.product.id} target="_blank" rel="noreferrer noopener">
                         <h5 className="fw-bolder">{item.product.title}</h5>

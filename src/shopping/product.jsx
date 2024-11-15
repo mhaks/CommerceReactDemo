@@ -1,4 +1,4 @@
-import React from "react";
+
 import { useLoaderData, redirect } from "react-router";
 import { Form, } from "react-router-dom";
 
@@ -46,7 +46,7 @@ export default function Product() {
 
                         {product != null ? (
                             <>
-                            <div className="col-md-6"><img className="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt={product.title} /></div>
+                            <div className="col-md-6"><img className="card-img-top mb-5 mb-md-0" src="/product_600x700.jpg" alt={product.title} /></div>
                             <div className="col-md-6">
                                 <div className="small mb-1">{product.modelNumber}</div>
                                 <h1 className="display-5 fw-bolder">{product.title}</h1>
