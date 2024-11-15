@@ -1,6 +1,7 @@
 import { useState }  from "react";
-
 import { Outlet} from "react-router";
+
+
 import ShoppingHeader from "./shopping/header";
 import AdminHeader from "./admin/header";
 import Footer from "./footer";
