@@ -40,7 +40,7 @@ export async function action({request, params}) {
     const formData = await request.formData(); 
     const addCartUrl = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart/Products`;
     await fetch(addCartUrl, {
-        method: 'PUT',
+        method: 'POST',
                 body: formData,
     });     
     return redirect('../cart/');

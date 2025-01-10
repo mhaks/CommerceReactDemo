@@ -2,7 +2,7 @@ import {useContext} from "react";
 
 import { useLoaderData, useActionData, redirect } from "react-router";
 import { Link, Form, } from "react-router-dom";
-import { UserContext } from './../contexts'; 
+import { CartItemCountContext } from './../contexts'; 
 
 
 
@@ -54,11 +54,13 @@ export default function Cart() {
     
     const cart = useLoaderData();
     const errors = useActionData();
+    const { setCartItemCount} = useContext(CartItemCountContext);
 
     const itemCount = cart.products?.length;
+    setCartItemCount(itemCount);
     const subTotal = cart.products?.reduce((accum, current) => accum + (current.quantity * current.price), 0);
 
-    const productsTemplate = cart.products?.map((item, index) => (                  
+    const productsTemplate = cart.products?.map((item) => (                  
         <tr key={item.id}>            
             <td><img className="" src="/product_150x100.jpg" alt={item.title} /></td>
             <td>

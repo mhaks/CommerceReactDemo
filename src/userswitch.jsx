@@ -33,9 +33,11 @@ export default function UserSwitch() {
 
         console.log("selectedUser: " + selected.value);
 
-        await fetch(`${API_URL}/CommerceDemo/Login?userName=${selected.value}`, {
+        await fetch(`${API_URL}/CommerceDemo/Users?userName=${selected.value}`, {
             method: "POST",
         })
+        .then(response => response.json())
+        .then(data => { console.log(data); })
         .catch(err => console.error(err));
 
         setUser(selected.value);          

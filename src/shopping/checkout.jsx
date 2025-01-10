@@ -182,7 +182,7 @@ export default function Checkout() {
                                         {errors?.cardExpiration && <p className="text-danger text-sm-start">{errors.cardExpiration}</p>}
                                     </div>
                                     <div className="col-md-3">
-                                        <label htmlFor="cardCCV" className="form-label">CVV</label>
+                                        <label htmlFor="cardCVV" className="form-label">CVV</label>
                                         <input id="cardCVV" name="cardCVV" className="form-control" placeholder="000" maxLength={3} onInput={ e => inputNumberOnly(e.target, 3)} />
                                         {errors?.cardCVV && <p className="text-danger text-sm-start">{errors.cardCVV}</p>}
                                     </div>

@@ -11,10 +11,11 @@ export default function CartStatus() {
         if (user === null ||  user === undefined || user === "") {
             return;
         }
-        const url = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart/Products`;
-        fetch(url, { method: "GET", credentials: "include", mode: "cors"})
+        const url = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart`;
+        //fetch(url, { method: "GET", credentials: "include", mode: "cors"})
+        fetch(url, { method: "GET"})
         .then(resp => resp.json())
-        .then(data => { setCartItemCount(data.length)})
+        .then(data => { setCartItemCount(data?.products?.length)})
         .catch(err => { console.error(err)});
 
     }, [user, setCartItemCount]);
