@@ -35,7 +35,7 @@ export async function action({ request }) {
         }
 
         await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart/Products/`, {
-            method: "PUT",
+            method: "POST",
             body: formData,
         })    
         .catch(err => console.error(err));
