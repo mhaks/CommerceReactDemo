@@ -1,12 +1,16 @@
 import React, {useState} from "react";
 import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";    
-
+import { getToken } from "../site";
 
 
 export async function loader() {   
     let categories = [];
-    await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/categories`)
+    await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/categories`,
+        {   
+            method: 'GET',
+            headers: { 'Authorization': 'Bearer ' + getToken() }
+        })
             .then(response => response.json())
             .then(data => { categories = data; })
             .catch(error => console.log(error));

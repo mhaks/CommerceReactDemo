@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";
+import { getToken } from "../site";
 
 
 
@@ -9,12 +10,22 @@ export async function loader() {
     let brands = [];
 
     await Promise.all([
-        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/categories`)
+        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/categories`,
+            {   
+                method: 'GET',
+                headers: { 'Authorization': 'Bearer ' + getToken() }
+            }
+        )
             .then(response => response.json())
             .then(data => { categories = data; })
             .catch(error => console.log(error)),
 
-        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/brands`) 
+        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/brands`,
+            {   
+                method: 'GET',
+                headers: { 'Authorization': 'Bearer ' + getToken() }
+            }
+        ) 
             .then(response => response.json())
             .then(data => { brands = data; })
             .catch(error => console.log(error))
@@ -30,7 +41,11 @@ export default function Products() {
 
     useEffect(() => {
         async function fetchProducts() {
-            await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products`)
+            await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products`,
+                {   
+                    method: 'GET',
+                    headers: { 'Authorization': 'Bearer ' + getToken() }
+                })
                 .then(response => response.json())
                 .then(data => setProducts(data))
                 .catch(error => console.error('Error:', error));
@@ -57,7 +72,11 @@ export default function Products() {
 
         console.log("Filter: " + url);
 
-        await fetch(url)
+        await fetch(url,
+            {   
+                method: 'GET',
+                headers: { 'Authorization': 'Bearer ' + getToken() }
+            })
                 .then(response => response.json())
                 .then(data => setProducts(data))
                 .catch(error => console.error('Error:', error));

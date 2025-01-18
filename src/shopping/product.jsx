@@ -1,6 +1,7 @@
 
 import { useLoaderData, redirect } from "react-router";
 import { Form, } from "react-router-dom";
+import { getToken } from "../site";
 
 
 export async function loader({params}) {
@@ -20,7 +21,8 @@ export async function action({request}) {
     const addCartUrl = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart/Products`;
     await fetch(addCartUrl, {
         method: 'POST',
-                body: formData,
+        headers: { "Authorization": `Bearer ${getToken()}` },
+        body: formData,
     });     
     return redirect('../cart/');
 }

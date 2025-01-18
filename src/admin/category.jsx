@@ -1,7 +1,7 @@
 import React from "react";
 import { useLoaderData, useActionData, redirect } from "react-router";
 import { Link, Form } from "react-router-dom";  
-
+import { getToken } from "../site";
 
 export async function loader({params}) {
     
@@ -11,7 +11,12 @@ export async function loader({params}) {
 
     let category = {};
 
-    await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/categories/${params.id}`)
+    await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/categories/${params.id}`,
+        {   
+            method: 'GET',
+            headers: { 'Authorization': 'Bearer ' + getToken() }
+        }   
+    )
         .then(response => response.json())
         .then(data => { category = data; })
         .catch(error => console.log(error));
@@ -37,6 +42,9 @@ export async function action({request}) {
 
     await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/categories/`, {
         method: 'PUT',
+        headers: {
+            'Authorization': 'Bearer ' + getToken()
+        },
         body: formData
     })
     .catch(err => { 

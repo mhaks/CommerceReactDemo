@@ -1,6 +1,7 @@
 import React from "react";
 import { useLoaderData, useActionData, redirect } from "react-router";
 import { Link, Form } from "react-router-dom";
+import { getToken } from "../site";
 
 export async function loader({params}) {
     let customer = {};
@@ -19,7 +20,12 @@ export async function loader({params}) {
         customer.phoneNumber = "";
         customer.email = "";
         
-        await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/unitedstates`)
+        await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/unitedstates`,
+                {   
+                    method: 'GET',
+                    headers: { 'Authorization': 'Bearer ' + getToken() }
+                }   
+        )
                 .then(response => response.json())
                 .then(data => { states = data; })
                 .catch(error => console.log(error));
@@ -27,12 +33,22 @@ export async function loader({params}) {
     else
     {
         await Promise.all([
-            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/unitedstates`)
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/unitedstates`,
+                    {   
+                        method: 'GET',
+                        headers: { 'Authorization': 'Bearer ' + getToken() }
+                    }   
+            )
                     .then(response => response.json())
                     .then(data => { states = data; })
                     .catch(error => console.log(error)),
     
-            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/customers/${params.id}`)
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/customers/${params.id}`,
+                    {   
+                        method: 'GET',
+                        headers: { 'Authorization': 'Bearer ' + getToken() }
+                    }
+            )
                     .then(response => response.json())
                     .then(data => { customer = data; })
                     .catch(error => console.log(error)),

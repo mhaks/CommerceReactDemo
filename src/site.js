@@ -4,3 +4,11 @@ export function toLocalDateTime(utc) {
     const localDT = new Date(utcDate.getTime() - offsetMinutes * 60000);
     return localDT.toLocaleString();
 }
+
+export function getToken() {
+    return sessionStorage.getItem("token");
+}
+
+export function setToken(token) {
+    sessionStorage.setItem("token", token);
+}

@@ -4,7 +4,7 @@ import UserSwitch from "./userswitch";
 
 
 export default function Footer() {
-
+    const currentYear = new Date().getFullYear();
 
     return (
         <footer className="footer fixed-bottom mt-auto py-2 bg-dark">
@@ -14,7 +14,7 @@ export default function Footer() {
                         <UserSwitch />
                     </div>
                 </div>
-                <p className="text-center text-white ">Copyright &copy; Mhaks 2024</p>
+                <p className="text-center text-white ">Copyright &copy; {currentYear} MHaks</p>
             </div>
         </footer>
     );

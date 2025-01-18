@@ -2,6 +2,7 @@ import React from "react";
 
 import { redirect, useLoaderData } from "react-router";
 import { Link, Form, } from "react-router-dom";
+import { getToken } from "../site";
 
 import SearchBar from "./searchbar";
 
@@ -41,7 +42,8 @@ export async function action({request, params}) {
     const addCartUrl = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart/Products`;
     await fetch(addCartUrl, {
         method: 'POST',
-                body: formData,
+        headers: { "Authorization": `Bearer ${getToken()}` },
+        body: formData,
     });     
     return redirect('../cart/');
 }

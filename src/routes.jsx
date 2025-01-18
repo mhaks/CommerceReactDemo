@@ -1,7 +1,7 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 
-import App, {loader as appLoader }  from "./App";
+import App from "./App";
 import ErrorPage from "./error-page";
 import Shopping, {loader as shoppingLoader } from "./shopping/home";
 import Search, {loader as searchLoader, action as searchAction } from "./shopping/search";
@@ -24,8 +24,7 @@ import AdminCustomer, {loader as adminCustomerLoader, action as adminCustomerAct
 export const router = createBrowserRouter([
     {
         path: '/',
-        element: <App/>,
-        loader: appLoader,
+        element: <App/>,        
         errorElement: <ErrorPage/>,        
         children: [
             {

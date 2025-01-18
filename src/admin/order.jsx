@@ -1,13 +1,18 @@
 import React from "react";
 import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom"; 
-import { toLocalDateTime } from "../site";   
+import { toLocalDateTime, getToken } from "../site";   
 
 
 export async function loader({params}) {
     const url = `${import.meta.env.VITE_REACT_APP_API_URL}/Admin/Orders/${params.id}`;
     let order = null;
-    await fetch(url)
+    await fetch(url,
+        {   
+            method: 'GET',
+            headers: { 'Authorization': 'Bearer ' + getToken() }
+        }
+    )
         .then(response => response.json())
         .then(data => order = data)
         .catch(err => console.error(err));

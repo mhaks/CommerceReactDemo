@@ -3,15 +3,18 @@ import {useContext} from "react";
 import { useLoaderData, useActionData, redirect } from "react-router";
 import { Link, Form, } from "react-router-dom";
 import { CartItemCountContext } from './../contexts'; 
-
+import { getToken } from "../site";
 
 
 
 export async function loader({ request }) {
-    console.log(request);
     const cartUrl = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart`;
     let cart = null;
-    await fetch(cartUrl)
+    await fetch(cartUrl,
+        { 
+            method: "GET",
+            headers: { "Authorization": `Bearer ${getToken()}` } 
+        })
         .then (response => response.json())
         .then (json => {cart = json;})
         .catch(err => console.error(err));
@@ -36,13 +39,15 @@ export async function action({ request }) {
 
         await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart/Products/`, {
             method: "POST",
+            headers: { "Authorization": `Bearer ${getToken()}` },
             body: formData,
         })    
         .catch(err => console.error(err));
     }
     else if (action === 'remove') {
         await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart/Products/${productId}`, {
-            method: "DELETE",           
+            method: "DELETE",   
+            headers: { "Authorization": `Bearer ${getToken()}` },        
         })    
         .catch(err => console.error(err));
     }

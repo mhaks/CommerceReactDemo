@@ -1,13 +1,17 @@
 import React from "react";
 import { useLoaderData, useActionData, redirect } from "react-router";
 import { Link, Form, } from "react-router-dom";
-
+import { getToken } from "../site";
 
 
 export async function loader() {
     const cartUrl = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart`;
     let order = null;
-    await fetch(cartUrl)
+    await fetch(cartUrl, 
+        {
+            method: "GET",
+            headers: { "Authorization": `Bearer ${getToken()}` }
+        })
         .then (response => response.json())
         .then (json => {order = json;})
         .catch(err => console.error(err));
@@ -29,6 +33,7 @@ export async function action({request}) {
     console.info('url: ' + updateCartUrl);
     await fetch(updateCartUrl, {
         method: 'POST',
+        headers: { "Authorization": `Bearer ${getToken()}` },
         body: formData,
     })
     .then(response => response.json())
@@ -78,7 +83,7 @@ export default function Checkout() {
     const errors = useActionData();
 
     const itemCount = order.products?.length;
-    const subtotal = order.products?.reduce((total, item) => total + item.price, 0);
+    const subtotal = order.products?.reduce((total, item) => total + (item.price * item.quantity), 0);
     const tax = subtotal * 0.06;
     const totalPrice = subtotal + tax;
  

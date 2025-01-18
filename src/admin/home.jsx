@@ -1,6 +1,6 @@
 import React from "react";
 import { useLoaderData } from "react-router";
-
+import { getToken } from "../site";
 
 export async function loader() {
     let sales = [];
@@ -12,37 +12,72 @@ export async function loader() {
     let inventory = [];
 
     await Promise.all([
-        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/summary/sales?days=7`)
+        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/summary/sales?days=7`,
+            {   
+                method: 'GET',
+                headers: { 'Authorization': 'Bearer ' + getToken() }
+            }
+        )
         .then(response => response.json())
         .then(data => sales = data)
         .catch(error => console.log(error)),
 
-        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/summary/orders?Status=1`)
+        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/summary/orders?Status=1`,
+            {   
+                method: 'GET',
+                headers: { 'Authorization': 'Bearer ' + getToken() }
+            }
+        )
             .then(response => response.json())
             .then(data => carts = data)
             .catch(error => console.log(error)),
         
-        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/summary/orders?Status=2`)
+        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/summary/orders?Status=2`,
+            {   
+                method: 'GET',
+                headers: { 'Authorization': 'Bearer ' + getToken() }
+            }
+        )
             .then(response => response.json())
             .then(data => processing = data)
             .catch(error => console.log(error)),
         
-        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/summary/orders?Status=3`)
+        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/summary/orders?Status=3`,
+            {   
+                method: 'GET',
+                headers: { 'Authorization': 'Bearer ' + getToken() }
+            }
+        )
             .then(response => response.json())
             .then(data => shipped = data)
             .catch(error => console.log(error)),
         
-        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/summary/orders?Status=4&Days=7`)
+        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/summary/orders?Status=4&Days=7`,
+            {   
+                method: 'GET',
+                headers: { 'Authorization': 'Bearer ' + getToken() }
+            }
+        )
             .then(response => response.json())
             .then(data => delivered = data)
             .catch(error => console.log(error)),
         
-        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/summary/orders?Status=5&Days=7`)
+        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/summary/orders?Status=5&Days=7`,
+            {   
+                method: 'GET',
+                headers: { 'Authorization': 'Bearer ' + getToken() }
+            }
+        )
             .then(response => response.json())
             .then(data => returns = data)
             .catch(error => console.log(error)),
 
-        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/summary/inventory?Threshold=10`)
+        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/summary/inventory?Threshold=10`,
+            {   
+                method: 'GET',
+                headers: { 'Authorization': 'Bearer ' + getToken() }
+            }
+        )
             .then(response => response.json())
             .then(data => inventory = data)
             .catch(error => console.log(error))

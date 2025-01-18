@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";
 import "../site.js";
-import { toLocalDateTime } from "../site";
+import { toLocalDateTime, getToken } from "../site";
 
 
 export async function loader() {
     let orderStates = [];
     
-    await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/Admin/Orders/States`)
+    await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/Admin/Orders/States`,
+        {   
+            method: 'GET',
+            headers: { 'Authorization': 'Bearer ' + getToken() }
+        })
             .then(response => response.json())
             .then(data => orderStates = data);
 
@@ -22,7 +26,12 @@ export default function Orders() {
 
     useEffect(() => { 
         const fetchOrders = async () => {
-            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/Admin/Orders`)
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/Admin/Orders`,
+                {   
+                    method: 'GET',
+                    headers: { 'Authorization': 'Bearer ' + getToken() }
+                }
+            )
                 .then(response => response.json())
                 .then(data => setOrders(data))
                 .catch(error => console.error('Error:', error));
@@ -50,7 +59,7 @@ export default function Orders() {
 
         ordersTemplate.push(
             <tr key={order.orderId}>
-                <td><a href={'../admin/order/' + order.orderId} target="_blank" rel="noopener noreferrer">{orderId}</a></td>
+                <td><a href={'../admin/order/' + order.orderId} >{orderId}</a></td>
                 <td>{order.userName}</td>
                 <td>{orderDateTime}</td>
                 <td>{order.statusName}</td>
@@ -86,7 +95,12 @@ export default function Orders() {
         if (statusId) url.searchParams.append("statusId", statusId);
 
         console.log("order filter: " + url);
-        await fetch(url)
+        await fetch(url,
+            {   
+                method: 'GET',
+                headers: { 'Authorization': 'Bearer ' + getToken() }
+            }   
+        )
                 .then(response => response.json())
                 .then(data => setOrders(data))
                 .catch(error => console.error('Error:', error)); 
@@ -100,6 +114,7 @@ export default function Orders() {
     
         await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/Admin/Orders/${orderId}/State/${stateId}`, {
             method: 'PUT',
+            headers: { 'Authorization': 'Bearer ' + getToken() },
             body: formData
         }).catch(error => console.error('Error:', error));  
         

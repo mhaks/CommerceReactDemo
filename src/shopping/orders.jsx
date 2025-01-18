@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
 import { Link } from "react-router-dom";
-import { toLocalDateTime } from "../site";
+import { toLocalDateTime, getToken } from "../site";
 
 
 export async function loader() {
@@ -15,7 +15,7 @@ export async function loader() {
             .then(data => { statuses = data })
             .catch(err => console.error(err)), 
         
-        fetch(urlOrders)
+        fetch(urlOrders, { headers: { "Authorization": `Bearer ${getToken()}` } })
             .then(request => request.json())
             .then(data => {orders = data})
             .catch(err => console.error(err))

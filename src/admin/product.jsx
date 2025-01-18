@@ -1,6 +1,7 @@
 import React from "react";
 import { useActionData, useLoaderData, redirect } from "react-router";
 import { Link, Form } from "react-router-dom";
+import { getToken } from "../site";
 
 
 export async function loader({params}) {
@@ -12,12 +13,21 @@ export async function loader({params}) {
         product = {id: "", title: "", description: "", brand: "", price: "", categoryId: "", model: "", availableQty: "", isActive: true};
         
         await Promise.all([           
-            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/categories`)
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/categories`,
+                {   
+                    method: 'GET',
+                    headers: { 'Authorization': 'Bearer ' + getToken() }    
+                })
                 .then(response => response.json())
                 .then(data => { categories = data; })
                 .catch(error => console.log(error)),
 
-            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/brands`) 
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/brands`,
+                {   
+                    method: 'GET',
+                    headers: { 'Authorization': 'Bearer ' + getToken() }    
+                }
+            ) 
                 .then(response => response.json())
                 .then(data => { brands = data; })
                 .catch(error => console.log(error))    
@@ -25,17 +35,29 @@ export async function loader({params}) {
     }
     else {
         await Promise.all([
-            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/${params.id}`)
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/${params.id}`,
+                {   
+                    method: 'GET',
+                    headers: { 'Authorization': 'Bearer ' + getToken() }
+                })
                 .then(response => response.json())
                 .then(data => { product = data; })
                 .catch(error => console.log(error)),
             
-            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/categories`)
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/categories`,
+                {   
+                    method: 'GET',
+                    headers: { 'Authorization': 'Bearer ' + getToken() }    
+                })
                 .then(response => response.json())
                 .then(data => { categories = data; })
                 .catch(error => console.log(error)),
 
-            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/brands`) 
+            fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/brands`,
+                {   
+                    method: 'GET',
+                    headers: { 'Authorization': 'Bearer ' + getToken() }    
+                }) 
                 .then(response => response.json())
                 .then(data => { brands = data; })
                 .catch(error => console.log(error))    
@@ -62,6 +84,7 @@ export async function action({request})
     // put
     await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/products/`, {
         method: 'PUT',
+        headers: { 'Authorization': 'Bearer ' + getToken() },
         body: formData
     })
     .then(response => { response.json(); })

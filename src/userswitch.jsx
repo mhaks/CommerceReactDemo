@@ -1,24 +1,49 @@
 import { useContext, useEffect, useState } from "react";
-import { UserContext,  AdminContext } from './contexts'; 
+import { useNavigate } from "react-router-dom";
+import { AdminContext, CartItemCountContext } from './contexts'; 
+import { setToken, getToken } from "./site";
 
 const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
 
 export default function UserSwitch() {
-    const { setUser } = useContext(UserContext);  
     const { setAdmin } = useContext(AdminContext);  
+    const { setCartItemCount } = useContext(CartItemCountContext);  
     const [users, setUsers] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const url = API_URL + "/CommerceDemo/Users";
-        fetch(url)
+        // running once to login as jerry
+        fetch(`${API_URL}/CommerceDemo/Login?userName=jerry`, {
+            method: "POST", 
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify("jerry")
+        })
+            .then(response => response.json())
+            .then(data => { 
+                setToken(data.token);
+                fetch(`${API_URL}/Shopping/Cart`, {
+                    method: "GET",
+                    headers: { "Authorization": `Bearer ${getToken()}` }
+                })
+                .then(response => response.json())
+                .then(data => { setCartItemCount(data?.products?.length)})
+                .catch(err => {
+                    console.error(err); 
+                    throw err;
+            });
+            })
+            .catch(err => console.error(err));
+        
+
+        fetch(`${API_URL}/CommerceDemo/Users`)
             .then(response => response.json())
             .then(data => { 
                 setUsers(data); 
                 const select = document.getElementById("userId");
                 select.value = "jerry";
-                handleSwitch();
-            })
+
+           })
             .catch(err => {console.error(err);});
     }, []);
 
@@ -31,19 +56,32 @@ export default function UserSwitch() {
         const selected = document.getElementById("userId").selectedOptions[0];  
         if(!selected) return;
 
-        console.log("selectedUser: " + selected.value);
-
-        await fetch(`${API_URL}/CommerceDemo/Users?userName=${selected.value}`, {
-            method: "POST",
+        await fetch(`${API_URL}/CommerceDemo/Login?userName=${selected.value}`, {
+            method: "POST", 
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify({userName: selected.value})
         })
         .then(response => response.json())
-        .then(data => { console.log(data); })
+        .then(data => { 
+            setToken(data.token);
+        })
         .catch(err => console.error(err));
 
-        setUser(selected.value);          
-        setAdmin(selected.getAttribute("data-admin") === "true");       
-    };
+        let isAdmin = selected.getAttribute("data-admin");      
+        setAdmin(isAdmin === "true");
 
+        if (isAdmin === "false") {
+            await fetch(`${API_URL}/Shopping/Cart`, {
+                method: "GET",
+                headers: { "Authorization": `Bearer ${getToken()}` }
+            })
+            .then(response => response.json())
+            .then(data => { setCartItemCount(data?.products?.length)})
+            .catch(err => console.error(err));
+        }
+
+        navigate("/"); 
+    }
     return(
         <div>
            <div className="input-group">

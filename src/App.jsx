@@ -1,5 +1,6 @@
 import { useState }  from "react";
 import { Outlet} from "react-router";
+import { setToken } from "./site";
 
 
 import ShoppingHeader from "./shopping/header";
@@ -8,16 +9,10 @@ import Footer from "./footer";
 import {UserContext, AdminContext, CartItemCountContext} from "./contexts";
 
 
-export async function loader() {
-  console.info(`REACT_APP_API_URL: ${import.meta.env.VITE_REACT_APP_API_URL}`);
-  
-  return null;
-}
-
 export default function App() {  
   
   const [cartItemCount, setCartItemCount] = useState(0);
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState("jerry");
   const [admin, setAdmin] = useState(false);
 
   return (

@@ -1,24 +1,12 @@
 import  { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {UserContext, CartItemCountContext} from "../contexts";
+import { getToken } from "../site";
 
 
 export default function CartStatus() {
-    const { user } = useContext(UserContext);
-    const { cartItemCount, setCartItemCount} = useContext(CartItemCountContext);    
 
-    useEffect(() => {
-        if (user === null ||  user === undefined || user === "") {
-            return;
-        }
-        const url = `${import.meta.env.VITE_REACT_APP_API_URL}/Shopping/Cart`;
-        //fetch(url, { method: "GET", credentials: "include", mode: "cors"})
-        fetch(url, { method: "GET"})
-        .then(resp => resp.json())
-        .then(data => { setCartItemCount(data?.products?.length)})
-        .catch(err => { console.error(err)});
-
-    }, [user, setCartItemCount]);
+    const { cartItemCount} = useContext(CartItemCountContext);    
 
     return (
         <div className="d-flex ms-auto">
