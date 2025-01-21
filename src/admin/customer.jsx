@@ -71,7 +71,8 @@ export async function action({request}) {
     // put
     await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/admin/customers/`, {
         method: 'PUT',
-        body: formData
+        body: formData,
+        headers: { 'Authorization': 'Bearer ' + getToken() }
     })
     .then(response => { response.json(); })
     .then(data => { console.log(data); })
