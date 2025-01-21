@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AdminContext, CartItemCountContext } from './contexts'; 
+import { UserContext, CartItemCountContext } from './contexts'; 
 import { setToken, getToken } from "./site";
 
 const API_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
 
 export default function UserSwitch() {
-    const { setAdmin } = useContext(AdminContext);  
+    const { setUser } = useContext(UserContext);  
     const { setCartItemCount } = useContext(CartItemCountContext);  
     const [users, setUsers] = useState([]);
     const navigate = useNavigate();
@@ -21,6 +21,8 @@ export default function UserSwitch() {
         })
             .then(response => response.json())
             .then(data => { 
+                console.log(data);
+                setUser(data.user);
                 setToken(data.token);
                 fetch(`${API_URL}/Shopping/Cart`, {
                     method: "GET",
@@ -63,12 +65,12 @@ export default function UserSwitch() {
         })
         .then(response => response.json())
         .then(data => { 
+            setUser(data.user);
             setToken(data.token);
         })
         .catch(err => console.error(err));
 
-        let isAdmin = selected.getAttribute("data-admin");      
-        setAdmin(isAdmin === "true");
+        let isAdmin = selected.getAttribute("data-admin");              
 
         if (isAdmin === "false") {
             await fetch(`${API_URL}/Shopping/Cart`, {

@@ -1,27 +1,25 @@
 import { useState }  from "react";
 import { Outlet} from "react-router";
-import { setToken } from "./site";
+
 
 
 import ShoppingHeader from "./shopping/header";
 import AdminHeader from "./admin/header";
 import Footer from "./footer";
-import {UserContext, AdminContext, CartItemCountContext} from "./contexts";
+import {UserContext, CartItemCountContext} from "./contexts";
 
 
 export default function App() {  
   
   const [cartItemCount, setCartItemCount] = useState(0);
-  const [user, setUser] = useState("jerry");
-  const [admin, setAdmin] = useState(false);
+  const [user, setUser] = useState(null);
 
   return (
-    <UserContext.Provider value={{user, setUser}}>
-    <AdminContext.Provider value={{admin, setAdmin}}>
+    <UserContext.Provider value={{user, setUser}}>    
     <CartItemCountContext.Provider value={{cartItemCount, setCartItemCount}}>
 
       {
-        admin ? (
+        user && user.isAdministrator ? (
           <>
             <AdminHeader />            
           </>
@@ -41,7 +39,6 @@ export default function App() {
 
         
     </CartItemCountContext.Provider>
-    </AdminContext.Provider>
     </UserContext.Provider>
   );
   

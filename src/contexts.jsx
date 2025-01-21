@@ -3,6 +3,4 @@ import {createContext} from 'react';
 
 export const UserContext = createContext();
 
-export const AdminContext = createContext();
-
 export const CartItemCountContext = createContext();
